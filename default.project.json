@@ -1,5 +1,5 @@
 {
-  "name": "genrojotree",
+  "name": "roblox-template",
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
@@ -7,13 +7,13 @@
         "$className": "Folder",
         "Services": {
           "$className": "Folder",
-          "ExampleService": {
+          "TestService": {
             "$className": "Folder",
-            "ExampleServiceClient": {
-              "$path": "src/services/ExampleService/Client.luau"
+            "TestServiceClient": {
+              "$path": "src/services/TestService/Client.luau"
             },
-            "ExampleServiceUtils": {
-              "$path": "src/services/ExampleService/Utils.luau"
+            "TestServiceUtils": {
+              "$path": "src/services/TestService/Utils.luau"
             }
           }
         },
@@ -37,10 +37,10 @@
       },
       "Services": {
         "$className": "Folder",
-        "ExampleService": {
+        "TestService": {
           "$className": "Folder",
-          "ExampleServiceServer": {
-            "$path": "src/services/ExampleService/Server.luau"
+          "TestServiceServer": {
+            "$path": "src/services/TestService/Server.luau"
           }
         }
       },

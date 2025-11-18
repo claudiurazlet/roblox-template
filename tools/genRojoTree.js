@@ -48,7 +48,7 @@ function getVirtualPath(filepath) {
 }
 
 const tree = {
-  name: "genrojotree",
+  name: "roblox-template",
   tree: {
     $className: "DataModel",
 
