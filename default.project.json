@@ -10,10 +10,10 @@
           "TestService": {
             "$className": "Folder",
             "TestServiceClient": {
-              "$path": "src/services/TestService/Client.luau"
+              "$path": "src/Services/TestService/Client.luau"
             },
             "TestServiceUtils": {
-              "$path": "src/services/TestService/Utils.luau"
+              "$path": "src/Services/TestService/Utils.luau"
             }
           }
         },
@@ -22,6 +22,12 @@
         },
         "Modules": {
           "$className": "Folder"
+        },
+        "Startup": {
+          "$className": "Folder",
+          "Client.client": {
+            "$path": "src/Startup/Client.client.luau"
+          }
         }
       },
       "Packages": {
@@ -40,7 +46,7 @@
         "TestService": {
           "$className": "Folder",
           "TestServiceServer": {
-            "$path": "src/services/TestService/Server.luau"
+            "$path": "src/Services/TestService/Server.luau"
           }
         }
       },
@@ -49,6 +55,12 @@
       },
       "Modules": {
         "$className": "Folder"
+      },
+      "Startup": {
+        "$className": "Folder",
+        "Server.server": {
+          "$path": "src/Startup/Server.server.luau"
+        }
       }
     },
     "StarterPlayer": {
