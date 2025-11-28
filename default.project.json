@@ -21,25 +21,37 @@
           "$className": "Folder"
         },
         "Modules": {
-          "$className": "Folder"
-        },
-        "Startup": {
           "$className": "Folder",
-          "Client.client": {
-            "$path": "src/Startup/Client.client.luau"
+          "Core": {
+            "$className": "Folder",
+            "RewireConfig": {
+              "$path": "src/Modules/Core/RewireConfig.luau"
+            }
+          },
+          "Test": {
+            "$className": "Folder",
+            "Rewire": {
+              "$className": "Folder",
+              "ExampleCore": {
+                "$path": "src/Modules/Test/Rewire/ExampleCore.luau"
+              },
+              "RewireTestConfig": {
+                "$path": "src/Modules/Test/Rewire/RewireTestConfig.luau"
+              }
+            }
           }
         }
       },
-      "Packages": {
-        "$path": "Packages"
+      "DevPackages": {
+        "$path": "DevPackages"
       },
       "UI": {
-        "$path": "src/ui"
+        "$path": "src/UI"
       }
     },
     "ServerScriptService": {
       "Server": {
-        "$path": "src/startup/Server.server.luau"
+        "$path": "src/Startup/Server.server.luau"
       },
       "Services": {
         "$className": "Folder",
@@ -55,18 +67,12 @@
       },
       "Modules": {
         "$className": "Folder"
-      },
-      "Startup": {
-        "$className": "Folder",
-        "Server.server": {
-          "$path": "src/Startup/Server.server.luau"
-        }
       }
     },
     "StarterPlayer": {
       "StarterPlayerScripts": {
         "Client": {
-          "$path": "src/startup/Client.client.luau"
+          "$path": "src/Startup/Client.client.luau"
         }
       }
     }
