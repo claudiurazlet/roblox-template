@@ -21,25 +21,7 @@
           "$className": "Folder"
         },
         "Modules": {
-          "$className": "Folder",
-          "Core": {
-            "$className": "Folder",
-            "RewireConfig": {
-              "$path": "src/Modules/Core/RewireConfig.luau"
-            }
-          },
-          "Test": {
-            "$className": "Folder",
-            "Rewire": {
-              "$className": "Folder",
-              "ExampleCore": {
-                "$path": "src/Modules/Test/Rewire/ExampleCore.luau"
-              },
-              "RewireTestConfig": {
-                "$path": "src/Modules/Test/Rewire/RewireTestConfig.luau"
-              }
-            }
-          }
+          "$className": "Folder"
         }
       },
       "DevPackages": {
