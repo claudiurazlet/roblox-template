@@ -21,7 +21,25 @@
           "$className": "Folder"
         },
         "Modules": {
-          "$className": "Folder"
+          "$className": "Folder",
+          "Core": {
+            "$className": "Folder",
+            "Greeting": {
+              "$path": "src/Modules/Core/Greeting.luau"
+            }
+          },
+          "Test": {
+            "$className": "Folder",
+            "Runner": {
+              "$path": "src/Modules/Test/Runner.luau"
+            },
+            "Specs": {
+              "$className": "Folder",
+              "Greeting.spec": {
+                "$path": "src/Modules/Test/Specs/Greeting.spec.luau"
+              }
+            }
+          }
         }
       },
       "DevPackages": {
