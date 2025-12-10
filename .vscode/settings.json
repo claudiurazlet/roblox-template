@@ -9,4 +9,5 @@
         "**/*.json": "${filename}",
         "**/*.js": "${filename}"
     },
+    "luau-lsp.types.definitionFiles": ["testez.d.luau"]
 }
