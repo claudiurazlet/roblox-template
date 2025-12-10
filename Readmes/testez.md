@@ -4,6 +4,7 @@ Questa guida spiega come usare TestEZ nel progetto, usando il codice già presen
 
 ## Dipendenza e struttura
 - TestEZ è installato come dev-dependency Wally (`roblox/testez@0.4.1`). Assicurati di aver eseguito `wally install`, che crea `DevPackages/_Index` con TestEZ.
+- `run-in-roblox` è installato via Rokit (`rojo-rbx/run-in-roblox@0.3.0`) per l'esecuzione headless.
 - I test vivono in `ReplicatedStorage.Shared.Modules.Test.Specs` (vedi `default.project.json`).
 - Il runner si trova in `Shared.Modules.Test.Runner` ed esporta `run` e `getTestEZ`.
 
@@ -76,7 +77,7 @@ return {
 }
 ```
 
-## Eseguire i test
+## Eseguire i test in Studio
 - In Studio (Command Bar):
 
 ```lua
@@ -87,6 +88,32 @@ print(results)
 ```
 
 - Output: il TextReporter stampa i risultati nella console; `results` contiene il riepilogo strutturato.
+
+## Esecuzione headless (run-in-roblox)
+- Prerequisiti: `rokit install` (per avere `run-in-roblox` 0.3.0), `wally install`, `npm install` (per chokidar e build script) e Rojo disponibile.
+- Comando principale (npm):
+
+```bash
+npm test
+```
+
+che esegue:
+
+```bash
+rojo build default.project.json -o out/test-place.rbxlx && \
+run-in-roblox --place out/test-place.rbxlx --script scripts/run-tests.server.lua
+```
+
+- Note su `run-in-roblox` 0.3.0 (rojo-rbx):
+  - CLI semplice: `--place` (opzionale) e `--script` (obbligatorio).
+  - Non richiede plugin esterni; il binario include il plugin.
+  - Installato via Rokit, disponibile nel PATH dopo `rokit install`.
+
+- Cosa fa lo script `scripts/run-tests.server.lua`:
+  - carica il runner (`Shared.Modules.Test`), esegue `Test.run()`, stampa i risultati,
+  - termina con errore se ci sono failure (così il processo esce con codice ≠ 0).
+
+- Dove vedere l'output: la console del comando mostra il reporter TestEZ e l'eventuale errore finale.
 
 ## Matchers utili
 - Uguaglianza: `expect(a).to.equal(b)`
