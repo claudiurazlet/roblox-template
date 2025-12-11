@@ -5,10 +5,6 @@ local TestServiceServer = require(ServerScriptService.Services.TestService.TestS
 
 TestServiceServer:init()
 
--- TEST SIFT
-SiftExamples.runAllExamples()
-SiftExamples.testImmutability()
-
 -- RUN TESTS
 local Test = require(ReplicatedStorage.Shared.Modules.Test.Runner)
 local results = Test.run()
