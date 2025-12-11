@@ -1,11 +1,11 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local function getTestEZ()
-	local devPackages = ReplicatedStorage:FindFirstChild("DevPackages")
-	assert(devPackages, "DevPackages folder missing; run `wally install`.")
+	local packages = ReplicatedStorage:FindFirstChild("Packages")
+	assert(packages, "Packages folder missing; run `wally install`.")
 
-	local index = devPackages:FindFirstChild("_Index")
-	assert(index, "DevPackages/_Index missing; run `wally install`.")
+	local index = packages:FindFirstChild("_Index")
+	assert(index, "Packages/_Index missing; run `wally install`.")
 
 	for _, pkg in ipairs(index:GetChildren()) do
 		local module = pkg:FindFirstChild("testez")
@@ -14,7 +14,7 @@ local function getTestEZ()
 		end
 	end
 
-	error("Could not find TestEZ in DevPackages/_Index")
+	error("Could not find TestEZ in Packages/_Index")
 end
 
 local function run()

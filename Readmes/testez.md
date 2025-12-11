@@ -3,7 +3,7 @@
 Questa guida spiega come usare TestEZ nel progetto, usando il codice già presente come esempio.
 
 ## Dipendenza e struttura
-- TestEZ è installato come dev-dependency Wally (`roblox/testez@0.4.1`). Assicurati di aver eseguito `wally install`, che crea `DevPackages/_Index` con TestEZ.
+- TestEZ è installato come dev-dependency Wally (`roblox/testez@0.4.1`). Assicurati di aver eseguito `wally install`, che crea `Packages/_Index` con TestEZ.
 - `run-in-roblox` è installato via Rokit (`rojo-rbx/run-in-roblox@0.3.0`) per l'esecuzione headless.
 - I test vivono in `ReplicatedStorage.Shared.Modules.Test.Specs` (vedi `default.project.json`).
 - Il runner si trova in `Shared.Modules.Test.Runner` ed esporta `run` e `getTestEZ`.
@@ -56,17 +56,17 @@ declare function expect(value: any): any
 Questo permette a VS Code di riconoscere i globals senza errori, mentre i test continuano a funzionare normalmente in Roblox Studio.
 
 ## Runner
-`src/Modules/Test/Runner.luau` carica TestEZ da `DevPackages/_Index`, trova la cartella `Specs` e lancia i test con il reporter testuale.
+`src/Modules/Test/Runner.luau` carica TestEZ da `Packages/_Index`, trova la cartella `Specs` e lancia i test con il reporter testuale.
 
 ```luau
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local function getTestEZ()
-	local devPackages = ReplicatedStorage:FindFirstChild("DevPackages")
-	assert(devPackages, "DevPackages folder missing; run `wally install`.")
+	local packages = ReplicatedStorage:FindFirstChild("Packages")
+	assert(packages, "Packages folder missing; run `wally install`.")
 
-	local index = devPackages:FindFirstChild("_Index")
-	assert(index, "DevPackages/_Index missing; run `wally install`.")
+	local index = packages:FindFirstChild("_Index")
+	assert(index, "Packages/_Index missing; run `wally install`.")
 
 	for _, pkg in ipairs(index:GetChildren()) do
 		local module = pkg:FindFirstChild("testez")
@@ -75,7 +75,7 @@ local function getTestEZ()
 		end
 	end
 
-	error("Could not find TestEZ in DevPackages/_Index")
+	error("Could not find TestEZ in Packages/_Index")
 end
 
 local function run()

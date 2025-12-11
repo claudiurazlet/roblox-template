@@ -59,9 +59,8 @@ const tree = {
         Classes: {  $className: "Folder", },
         Modules: { $className: "Folder", }
       },
-      // Packages: { $path: "Packages", },
+      Packages: { $path: "Packages", },
       // ServerPackages: { $path: "ServerPackages", },
-      DevPackages: { $path: "DevPackages", },
       UI: { $path: "src/UI", },
     },
 

@@ -42,8 +42,8 @@
           }
         }
       },
-      "DevPackages": {
-        "$path": "DevPackages"
+      "Packages": {
+        "$path": "Packages"
       },
       "UI": {
         "$path": "src/UI"

@@ -8,7 +8,6 @@
 node_modules/
 Packages/
 ServerPackages/
-DevPackages/
 sourcemap.json
 Assets/
 wally.lock
