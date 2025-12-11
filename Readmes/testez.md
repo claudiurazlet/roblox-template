@@ -35,7 +35,25 @@ Linee guida rapide:
 - `describe("nome", fn)` raggruppa test correlati.
 - `it("fa qualcosa", fn)` definisce un caso di test.
 - Le asserzioni si fanno con `expect(value).to.<matcher>(...)` (ad es. `to.equal`, `to.be.ok`, `to.be.near`, `to.never.throw`, `to.be.a`, ecc.).
-- Importa il modulo da testare via `ReplicatedStorage.Shared.Modules...` per rispecchiare l’albero Rojo.
+- Importa il modulo da testare via `ReplicatedStorage.Shared.Modules...` per rispecchiare l'albero Rojo.
+
+## Errori di sintassi in VS Code
+I globals di TestEZ (`describe`, `it`, `expect`, ecc.) vengono iniettati a runtime e non sono riconosciuti dal linter statico. Per risolvere:
+
+1. **File di definizione tipi** - Abbiamo creato `testez.d.luau` nella root del progetto che dichiara tutti i globals di TestEZ:
+```luau
+declare function describe(phrase: string, callback: () -> ()): ()
+declare function it(phrase: string, callback: () -> ()): ()
+declare function expect(value: any): any
+-- ... altri globals
+```
+
+2. **Configurazione Luau LSP** - In `.vscode/settings.json` abbiamo aggiunto:
+```json
+"luau-lsp.types.definitionFiles": ["testez.d.luau"]
+```
+
+Questo permette a VS Code di riconoscere i globals senza errori, mentre i test continuano a funzionare normalmente in Roblox Studio.
 
 ## Runner
 `src/Modules/Test/Runner.luau` carica TestEZ da `DevPackages/_Index`, trova la cartella `Specs` e lancia i test con il reporter testuale.
