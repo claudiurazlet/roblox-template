@@ -40,6 +40,15 @@
               }
             }
           }
+        },
+        "Examples": {
+          "$className": "Folder",
+          "Sift": {
+            "$className": "Folder",
+            "SiftExamples": {
+              "$path": "src/Examples/Sift/SiftExamples.luau"
+            }
+          }
         }
       },
       "Packages": {
