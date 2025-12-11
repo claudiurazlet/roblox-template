@@ -1,6 +1,7 @@
 # Regole per le risposte di Copilot
 
 
+- I want comments as much as possible in caps lock. I find it easier to distinguish from commented code.
 - New scripts should be .luau and not .lua
 - I only have a main script for client "Startup/Client.client.luau" and one for the server "Startup/Server.server.luau"
 - After downloading a package, if you need to see how it works, don't forget to have a look if it has a guide inside; or maybe try to look on it's github page or for some examples on stackoverflow.
