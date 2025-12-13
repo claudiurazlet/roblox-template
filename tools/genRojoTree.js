@@ -60,7 +60,7 @@ const tree = {
         Modules: { $className: "Folder", }
       },
       Packages: { $path: "Packages", },
-      // ServerPackages: { $path: "ServerPackages", },
+      ServerPackages: { $path: "ServerPackages", },
       UI: { $path: "src/UI", },
     },
 
