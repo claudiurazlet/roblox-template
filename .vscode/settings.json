@@ -1,13 +1,17 @@
 {
 	"stylua.targetReleaseVersion": "latest",
     "workbench.editor.customLabels.patterns": {
-        "**/init.lua": "${dirname} (${filename}.${extname})",
-        "**/init.luau": "${dirname} (${filename}.${extname})",
-		"**/Client.luau": "${dirname}${filename}.${extname}",
-		"**/Server.luau": "${dirname}${filename}.${extname}",
-		"**/Utils.luau": "${dirname}${filename}.${extname}",
+		"**/src/**/*.luau": "${filename}",
+        "**/src/**/init.lua": "${dirname} (${filename})",
+        "**/src/**/init.luau": "${dirname} (${filename})",
+		"**/src/**/Client.luau": "${dirname}${filename}",
+		"**/src/**/Server.luau": "${dirname}${filename}",
+		"**/src/**/Utils.luau": "${dirname}${filename}",
+		"**/src/**/Server.server.luau": "${filename}",
+		"**/src/**/Client.client.luau": "${filename}",
         "**/*.json": "${filename}",
-        "**/*.js": "${filename}"
+        "**/*.js": "${filename}",
+        "**/*.md": "${filename}",
     },
     "luau-lsp.types.definitionFiles": ["testez.d.luau"]
 }
