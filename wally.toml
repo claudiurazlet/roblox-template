@@ -7,3 +7,9 @@ realm = "shared"
 [dependencies]
 Sift = "csqrl/sift@0.0.11"
 TestEZ = "roblox/testez@0.4.1"
+Signal = "sleitnick/signal@2.0.0"
+Promise = "evaera/promise@4.0.0"
+Networker = "leifstout/networker@0.3.0"
+
+[server-dependencies]
+ProfileService = "firebird702/profileservice@1.1.0"
