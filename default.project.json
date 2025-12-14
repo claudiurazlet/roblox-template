@@ -7,6 +7,12 @@
         "$className": "Folder",
         "Services": {
           "$className": "Folder",
+          "BuildService": {
+            "$className": "Folder",
+            "BuildServiceClient": {
+              "$path": "src/Services/BuildService/Client.luau"
+            }
+          },
           "TestService": {
             "$className": "Folder",
             "TestServiceClient": {
@@ -18,7 +24,10 @@
           }
         },
         "Classes": {
-          "$className": "Folder"
+          "$className": "Folder",
+          "Spike": {
+            "$path": "src/Classes/Spike.luau"
+          }
         },
         "Modules": {
           "$className": "Folder",
@@ -59,11 +68,20 @@
       }
     },
     "ServerScriptService": {
+      "ServerPackages": {
+        "$path": "ServerPackages"
+      },
       "Server": {
         "$path": "src/Startup/Server.server.luau"
       },
       "Services": {
         "$className": "Folder",
+        "BuildService": {
+          "$className": "Folder",
+          "BuildServiceServer": {
+            "$path": "src/Services/BuildService/Server.luau"
+          }
+        },
         "TestService": {
           "$className": "Folder",
           "TestServiceServer": {
