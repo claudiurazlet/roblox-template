@@ -60,11 +60,11 @@ const tree = {
         Modules: { $className: "Folder", }
       },
       Packages: { $path: "Packages", },
-      ServerPackages: { $path: "ServerPackages", },
       UI: { $path: "src/UI", },
     },
 
     ServerScriptService: {
+      ServerPackages: { $path: "ServerPackages", },
       Server: { $path: "src/Startup/Server.server.luau", },
       Services: { $className: "Folder", },
       Classes: { $className: "Folder", },
