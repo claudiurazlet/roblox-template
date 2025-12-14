@@ -143,19 +143,8 @@ function SiftExamples.gameStateExamples()
 	})
 
 	-- Esempio: Giocatore subisce danni
-	local stateAfterDamage = Sift.Dictionary.mergeDeep(gameState, {
-		player = {
-			health = gameState.player.health - 25,
-		},
-	})
 
 	-- Esempio: Aprire inventario UI
-	local stateWithInventoryOpen = Sift.Dictionary.mergeDeep(gameState, {
-		ui = {
-			inventoryOpen = true,
-			selectedItem = "Starter Sword",
-		},
-	})
 
 	-- Esempio: Multiple updates in una volta
 	local stateAfterBattle = Sift.Dictionary.mergeDeep(gameState, {
