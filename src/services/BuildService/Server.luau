@@ -8,7 +8,7 @@ local BuildServiceServer = {}
 local BUILD_COOLDOWN = 0.1 -- seconds
 local lastBuildTimeByKey: { [any]: number } = {}
 
-function BuildServiceServer:init()
+function BuildServiceServer.init(self: BuildServiceServer)
 	self.networker = Networker.server.new("BuildService", self, {
 		self.attemptBuild,
 	})
@@ -19,7 +19,7 @@ function BuildServiceServer:init()
 	end)
 end
 
-function BuildServiceServer:attemptBuild(player: Player, cf: CFrame)
+function BuildServiceServer.attemptBuild(self: BuildServiceServer, player: Player, cf: CFrame)
 	if self:isInCooldown(player) then
 		warn("Player " .. player.Name .. " is building too quickly! Ignoring build request.")
 		return false
@@ -35,15 +35,15 @@ function BuildServiceServer:attemptBuild(player: Player, cf: CFrame)
 	return true
 end
 
-function BuildServiceServer:isInCooldown(player: Player): boolean
+function BuildServiceServer.isInCooldown(self: BuildServiceServer, player: Player): boolean
 	return self:getCooldown(player) < BUILD_COOLDOWN
 end
 
-function BuildServiceServer:getBuildCooldown(): number
+function BuildServiceServer.getBuildCooldown(self: BuildServiceServer): number
 	return BUILD_COOLDOWN
 end
 
-function BuildServiceServer:getCooldown(player: Player): number
+function BuildServiceServer.getCooldown(self: BuildServiceServer, player: Player): number
 	local lastBuildTime = lastBuildTimeByKey[player]
 	if lastBuildTime == nil then
 		return math.huge
