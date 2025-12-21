@@ -1,46 +1,49 @@
-# Guida Setup genRojoTree
+# genRojoTree setup guide
 
-## Introduzione
+## Introduction
 
-Il tool `genRojoTree.js` è uno script che permette di automatizzare la gestione della struttura del progetto Roblox, mantenendo una struttura compatta in VS Code e generando automaticamente il file `default.project.json` per Rojo.
+`tools/genRojoTree.js` is a script that automates management of the Roblox project structure: it keeps a compact, developer-friendly layout in VS Code and generates the Rojo `default.project.json` file automatically.
 
-## Obiettivi
+## Goals
 
-- **Struttura compatta**: Mantenere una struttura del progetto più organizzata in VS Code
-- **Distribuzione automatica**: I file vengono automaticamente distribuiti nelle giuste posizioni in Roblox Studio:
-  - `Client.luau` e `Utils.luau` → **ReplicatedStorage**
+- **Compact structure**: keep the repo nicely organized in VS Code
+- **Automatic placement**: files are mapped to the correct Roblox services:
+  - `Client.luau` and `Utils.luau` → **ReplicatedStorage**
   - `Server.luau` → **ServerScriptService**
-- **Hot reloading**: Aggiornamento automatico del file `default.project.json` ad ogni modifica dei file sorgente
+- **Hot reloading**: `default.project.json` is regenerated whenever `src/` changes
 
-## Crediti
+## Credits
 
-- **Progetto originale**: [leifstout/genRojoTree](https://github.com/leifstout/genRojoTree)
-- **Tutorial YouTube**: [Roblox TypeScript Tutorial](https://www.youtube.com/watch?v=ouNVJcGH9MA) (timestamp: 6:10:16)
+- Original project: [leifstout/genRojoTree](https://github.com/leifstout/genRojoTree)
+- YouTube tutorial reference: [Roblox TypeScript Tutorial](https://www.youtube.com/watch?v=ouNVJcGH9MA) (timestamp: 6:10:16)
 
-## Struttura del Progetto
+## Project structure (in this repo)
+
+This repository uses these top-level folders under `src/`:
 
 ```
 src/
-├── classes/          # Classi condivise
-├── modules/          # Moduli utility
-├── services/         # Servizi del gioco
-│   └── <NomeServizio>/
-│       ├── Client.luau    # Logica client
-│       ├── Server.luau    # Logica server
-│       └── Utils.luau     # Utility condivise (opzionale)
-├── startup/          # Script di avvio
+├── Classes/
+├── Modules/
+├── Services/
+│   └── <ServiceName>/
+│       ├── Client.luau
+│       ├── Server.luau
+│       └── Utils.luau (optional)
+├── Startup/
 │   ├── Client.client.luau
 │   └── Server.server.luau
-└── ui/              # Interfacce utente
+└── UI/
 ```
 
-## Setup Completo
+## Full setup
 
-### 1. Configurazione VS Code
+### 1) VS Code configuration
 
-Sono necessari due file nella cartella `.vscode/`:
+Two files are typically used under `.vscode/`.
 
 #### `.vscode/settings.json`
+
 ```json
 {
     "stylua.targetReleaseVersion": "latest",
@@ -56,9 +59,10 @@ Sono necessari due file nella cartella `.vscode/`:
 }
 ```
 
-> **Nota**: Questa configurazione permette di visualizzare i file con nomi più descrittivi nei tab di VS Code (es. "TestServiceClient.luau" invece di "Client.luau")
+This makes tab names more descriptive (e.g. `TestServiceClient.luau` instead of `Client.luau`).
 
 #### `.vscode/tasks.json`
+
 ```json
 {
     "version": "2.0.0",
@@ -84,119 +88,81 @@ Sono necessari due file nella cartella `.vscode/`:
 }
 ```
 
-### 2. Inizializzazione del Progetto Node.js
+### 2) Node.js initialization
 
-Apri un terminale Git Bash nella root del progetto e esegui:
+From the repo root:
 
 ```bash
-# Inizializza package.json
-npm init -y
-
-# Installa chokidar-cli per il file watching
-npm install --save-dev chokidar-cli
+npm install
 ```
 
-### 3. Configurazione Script NPM
+This repo already includes `chokidar-cli` as a dev dependency in `package.json`.
 
-Aggiungi questi script al `package.json`:
+### 3) NPM scripts
 
-```json
-"scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build:rojo": "node tools/genRojoTree.js",
-    "watch:rojo": "chokidar \"src/**/*\" -c \"npm run build:rojo\""
+The key scripts are in `package.json`:
+
+- `npm run build:rojo` → generates/updates `default.project.json`
+- `npm run watch:rojo` → watches `src/**/*` and regenerates on changes
+
+### 4) Rojo + Rokit
+
+Install tools (if not already installed):
+
+```bash
+rokit.exe self-update
+rokit install
+```
+
+### 5) Start watch mode
+
+1. Open VS Code
+2. Press `Ctrl+Shift+P`
+3. Choose "Tasks: Run Task"
+4. Select "Watch Rojo Tree"
+
+From now on, changes under `src/` will update `default.project.json` automatically.
+
+## Customization
+
+### Project name
+
+In `tools/genRojoTree.js`, change the `name` property:
+
+```js
+const tree = {
+    name: "your-project-name",
+    tree: {
+        // ...
+    },
 }
 ```
 
-**Spiegazione script:**
-- `build:rojo`: Esegue il tool per generare/aggiornare `default.project.json`
-- `watch:rojo`: Monitora la cartella `src/` e rigenera automaticamente il file ad ogni modifica
+### CustomPackages removal (if present)
 
-### 4. Setup Rojo
+If `genRojoTree.js` contains a `CustomPackages` section under `tree.ReplicatedStorage`, remove it if you do not need it.
 
-Installa e configura Rojo:
+## What to commit
 
-```bash
-# Aggiorna rokit
-rokit.exe self-update
+- Commit `default.project.json` (generated output) but do not edit it manually.
+- Commit `package.json` and `package-lock.json`.
+- Do not commit `sourcemap.json` (it is regenerated).
 
-# Inizializza rokit nel progetto
-rokit init
-
-# Installa Rojo
-rokit add rojo
-
-# Inizializza il progetto Rojo
-rojo init
-```
-
-### 5. Avvio del Watch Mode
-
-1. Apri VS Code
-2. Premi `Ctrl+Shift+P`
-3. Seleziona "Tasks: Run Task"
-4. Scegli "Watch Rojo Tree"
-
-Da questo momento, ogni modifica ai file nella cartella `src/` aggiornerà automaticamente `default.project.json`.
-
-## Personalizzazione
-
-### Configurazione del Nome Progetto
-
-Nel file `tools/genRojoTree.js`, modifica la proprietà `name` con il nome del tuo progetto:
-
-```javascript
-const tree = {
-    name: "il-tuo-progetto",  // ← Modifica qui
-    tree: {
-        // ... resto della configurazione
-    }
-};
-```
-
-### Rimozione CustomPackages (se presente)
-
-Se nel file `genRojoTree.js` è presente una sezione `CustomPackages` sotto `tree.ReplicatedStorage`, rimuovila se non necessaria.
-
-## File da Committare
-
-Assicurati di committare questi file nel repository:
-- ✅ `default.project.json`
-- ✅ `package.json`
-- ✅ `package-lock.json`
-- ❌ `sourcemap.json` (viene rigenerato automaticamente)
-
-> **Nota**: Se il file `sourcemap.json` dovesse dare problemi, eliminalo e riavvia VS Code per farlo rigenerare dal Luau Language Server.
+If `sourcemap.json` causes issues, delete it and restart VS Code so the Luau Language Server regenerates it.
 
 ## Troubleshooting
 
-### Problemi Comuni
+- Task does not start: ensure `npm install` has been run.
+- File not updating: ensure the `watch:rojo` task is running and `tools/genRojoTree.js` is correct.
+- Sync issues: delete `sourcemap.json` and restart VS Code.
 
-1. **Il task non si avvia**: Verifica che `chokidar-cli` sia installato correttamente
-2. **File non aggiornato**: Controlla che il nome del progetto in `genRojoTree.js` sia corretto
-3. **Errori di sincronizzazione**: Elimina `sourcemap.json` e riavvia VS Code
+## How it works (high level)
 
-### Verifica Funzionamento
+`tools/genRojoTree.js`:
 
-Per testare che tutto funzioni:
-1. Modifica un file in `src/services/`
-2. Controlla che `default.project.json` venga aggiornato
-3. Verifica la console del task "Watch Rojo Tree" per eventuali errori
-
-## Estensioni VS Code Consigliate
-
-- **Luau Language Server**: Intellisense e import automatici per Luau
-- **Rojo - Roblox Studio Sync**: Integrazione con Rojo
-- **GitHub Copilot Chat**: Assistant AI per coding
-- **Selene**: Linting per Luau
-- **StyLua**: Formattazione automatica del codice
-
-## Come Funziona
-
-Il tool `genRojoTree.js`:
-1. Scansiona ricorsivamente la cartella `src/`
-2. Analizza i nomi dei file per determinare la destinazione (Server vs Client)
-3. Genera la struttura appropriata in `default.project.json`
-4. I file `*Server.luau` vanno in **ServerScriptService**
-5. Tutti gli altri file vanno in **ReplicatedStorage**
-6. Applica la convenzione PascalCase ai nomi delle cartelle
+1. Recursively scans `src/`
+2. Detects destinations based on filenames (server vs client)
+3. Generates the appropriate structure in `default.project.json`
+4. Maps `*Server.luau` files to **ServerScriptService**
+5. Maps everything else to **ReplicatedStorage**
+6. Applies PascalCase naming for folders

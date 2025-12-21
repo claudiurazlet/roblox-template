@@ -1,16 +1,18 @@
-# Guida rapida a TestEZ
+# TestEZ quick guide
 
-Questa guida spiega come usare TestEZ nel progetto, usando il codice già presente come esempio.
+This guide explains how TestEZ is used in this project, using the existing code as reference.
 
-## Dipendenza e struttura
-- TestEZ è installato come dev-dependency Wally (`roblox/testez@0.4.1`). Assicurati di aver eseguito `wally install`, che crea `Packages/_Index` con TestEZ.
-- `run-in-roblox` è installato via Rokit (`rojo-rbx/run-in-roblox@0.3.0`) per l'esecuzione headless.
-- I test vivono in `ReplicatedStorage.Shared.Modules.Test.Specs` (vedi `default.project.json`).
-- Il runner si trova in `Shared.Modules.Test.Runner` ed esporta `run` e `getTestEZ`.
+## Dependencies and structure
 
-## Scrivere uno spec
-- I file di test usano estensione `.spec.luau` e ritornano una funzione che definisce `describe`/`it`.
-- Esempio (`src/Modules/Test/Specs/Greeting.spec.luau`):
+- TestEZ is installed via Wally (`roblox/testez@0.4.1`). Run `wally install` to populate `Packages/_Index` with TestEZ.
+- `run-in-roblox` is installed via Rokit (`rojo-rbx/run-in-roblox@0.3.0`) for headless test execution.
+- Specs live under `ReplicatedStorage.Shared.Modules.Test.Specs` (see [`default.project.json`](../default.project.json)).
+- The runner is in `Shared.Modules.Test.Runner` and exports `run` and `getTestEZ`.
+
+## Writing a spec
+
+- Spec files use the `.spec.luau` extension and return a function that defines `describe`/`it`.
+- Example: [`src/Modules/Test/Specs/Greeting.spec.luau`](../src/Modules/Test/Specs/Greeting.spec.luau)
 
 ```luau
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -31,72 +33,30 @@ return function()
 end
 ```
 
-Linee guida rapide:
-- `describe("nome", fn)` raggruppa test correlati.
-- `it("fa qualcosa", fn)` definisce un caso di test.
-- Le asserzioni si fanno con `expect(value).to.<matcher>(...)` (ad es. `to.equal`, `to.be.ok`, `to.be.near`, `to.never.throw`, `to.be.a`, ecc.).
-- Importa il modulo da testare via `ReplicatedStorage.Shared.Modules...` per rispecchiare l'albero Rojo.
+Quick guidelines:
 
-## Errori di sintassi in VS Code
-I globals di TestEZ (`describe`, `it`, `expect`, ecc.) vengono iniettati a runtime e non sono riconosciuti dal linter statico. Per risolvere:
+- `describe("name", fn)` groups related tests.
+- `it("does something", fn)` defines a test case.
+- Assertions use `expect(value).to.<matcher>(...)` (e.g. `to.equal`, `to.be.ok`, `to.be.near`, `to.never.throw`, `to.be.a`, etc.).
+- Require modules via `ReplicatedStorage.Shared.Modules...` so your tests match the Rojo tree.
 
-1. **File di definizione tipi** - Abbiamo creato `testez.d.luau` nella root del progetto che dichiara tutti i globals di TestEZ:
-```luau
-declare function describe(phrase: string, callback: () -> ()): ()
-declare function it(phrase: string, callback: () -> ()): ()
-declare function expect(value: any): any
--- ... altri globals
-```
+## VS Code / Luau LSP globals
 
-2. **Configurazione Luau LSP** - In `.vscode/settings.json` abbiamo aggiunto:
+TestEZ globals (`describe`, `it`, `expect`, etc.) are injected at runtime and are not known by static tooling.
+
+This repo includes a type definition file at [`testez.d.luau`](../testez.d.luau) that declares these globals. If needed, add this to your `.vscode/settings.json`:
+
 ```json
 "luau-lsp.types.definitionFiles": ["testez.d.luau"]
 ```
 
-Questo permette a VS Code di riconoscere i globals senza errori, mentre i test continuano a funzionare normalmente in Roblox Studio.
-
 ## Runner
-`src/Modules/Test/Runner.luau` carica TestEZ da `Packages/_Index`, trova la cartella `Specs` e lancia i test con il reporter testuale.
 
-```luau
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+[`src/Modules/Test/Runner.luau`](../src/Modules/Test/Runner.luau) loads TestEZ from `Packages/_Index`, finds the `Specs` folder, and runs tests with the text reporter.
 
-local function getTestEZ()
-	local packages = ReplicatedStorage:FindFirstChild("Packages")
-	assert(packages, "Packages folder missing; run `wally install`.")
+## Running tests in Studio
 
-	local index = packages:FindFirstChild("_Index")
-	assert(index, "Packages/_Index missing; run `wally install`.")
-
-	for _, pkg in ipairs(index:GetChildren()) do
-		local module = pkg:FindFirstChild("testez")
-		if module then
-			return require(module)
-		end
-	end
-
-	error("Could not find TestEZ in Packages/_Index")
-end
-
-local function run()
-	local TestEZ = getTestEZ()
-	local TestBootstrap = TestEZ.TestBootstrap
-	local TextReporter = TestEZ.Reporters.TextReporter
-
-	local testsRoot = ReplicatedStorage.Shared.Modules.Test:FindFirstChild("Specs")
-	assert(testsRoot, "No Specs folder under Shared.Modules.Test")
-
-	return TestBootstrap:run({ testsRoot }, TextReporter)
-end
-
-return {
-	run = run,
-	getTestEZ = getTestEZ,
-}
-```
-
-## Eseguire i test in Studio
-- In Studio (Command Bar):
+In Studio (Command Bar):
 
 ```lua
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -105,44 +65,41 @@ local results = Test.run()
 print(results)
 ```
 
-- Output: il TextReporter stampa i risultati nella console; `results` contiene il riepilogo strutturato.
+The TextReporter prints results to the output; `results` contains a structured summary.
 
-## Esecuzione headless (run-in-roblox)
-- Prerequisiti: `rokit install` (per avere `run-in-roblox` 0.3.0), `wally install`, `npm install` (per chokidar e build script) e Rojo disponibile.
-- Comando principale (npm):
+## Headless execution (run-in-roblox)
+
+Prerequisites: `rokit install`, `wally install`, `npm install`, and Rojo available.
+
+Main command:
 
 ```bash
 npm test
 ```
 
-che esegue:
+This repo’s `package.json` runs:
 
 ```bash
 rojo build default.project.json -o out/test-place.rbxlx && \
-run-in-roblox --place out/test-place.rbxlx --script scripts/run-tests.server.lua
+run-in-roblox --place out/test-place.rbxlx --script scripts/run-tests.server.luau
 ```
 
-- Note su `run-in-roblox` 0.3.0 (rojo-rbx):
-  - CLI semplice: `--place` (opzionale) e `--script` (obbligatorio).
-  - Non richiede plugin esterni; il binario include il plugin.
-  - Installato via Rokit, disponibile nel PATH dopo `rokit install`.
+Script behavior (`scripts/run-tests.server.luau`):
 
-- Cosa fa lo script `scripts/run-tests.server.lua`:
-  - carica il runner (`Shared.Modules.Test`), esegue `Test.run()`, stampa i risultati,
-  - termina con errore se ci sono failure (così il processo esce con codice ≠ 0).
+- requires the test module (`Shared.Modules.Test`)
+- runs `Test.run()`
+- exits with an error code if there are failures (so CI can fail)
 
-- Dove vedere l'output: la console del comando mostra il reporter TestEZ e l'eventuale errore finale.
+## Useful matchers
 
-## Matchers utili
-- Uguaglianza: `expect(a).to.equal(b)`
-- Verità: `expect(a).to.be.ok()`
-- Vicinanza numerica: `expect(a).to.be.near(b, diff)`
-- Tipo: `expect(a).to.be.a("string")`
-- Errori: `expect(fn).to.throw()` / `expect(fn).to.never.throw()`
-- Tabelle: `expect(tbl).to.contain(value)` / `expect(tbl).to.be.a("table")`
+- Equality: `expect(a).to.equal(b)`
+- Truthy: `expect(a).to.be.ok()`
+- Numeric near: `expect(a).to.be.near(b, diff)`
+- Type: `expect(a).to.be.a("string")`
+- Errors: `expect(fn).to.throw()` / `expect(fn).to.never.throw()`
 
-## Suggerimenti
-- Metti ogni modulo testato sotto `Shared.Modules` così il runner lo può richiedere facilmente.
-- Organizza gli spec per feature (es. `Player.spec.luau`, `Inventory.spec.luau`).
-- Se aggiungi altre cartelle di test, includile nel runner o usa naming coerente.
-- Esegui `wally install` ogni volta che aggiungi/aggiorni dipendenze Wally prima di avviare i test.
+## Tips
+
+- Keep tested modules under `Shared.Modules` so the runner can require them easily.
+- Organize specs by feature (e.g. `Player.spec.luau`, `Inventory.spec.luau`).
+- Run `wally install` whenever you add/update Wally dependencies before running tests.
