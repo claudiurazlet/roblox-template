@@ -44,6 +44,9 @@
             },
             "Specs": {
               "$className": "Folder",
+              "BuildServiceS.spec": {
+                "$path": "src/Modules/Test/Specs/BuildServiceS.spec.luau"
+              },
               "Greeting.spec": {
                 "$path": "src/Modules/Test/Specs/Greeting.spec.luau"
               }

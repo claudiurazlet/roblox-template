@@ -1,35 +1,60 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
 local Networker = require(ReplicatedStorage.Packages.Networker)
 local Spike = require(ReplicatedStorage.Shared.Classes.Spike)
 
-local BUILD_COOLDOWN = 0.1 -- seconds
 local BuildServiceServer = {}
 
-function BuildServiceServer.init(self: BuildServiceServer)
-    self.previousBuildTime = 0
-    self.networker = Networker.server.new("BuildService", self, {
-        self.attemptBuild,
-    })
+local BUILD_COOLDOWN = 0.1 -- seconds
+local lastBuildTimeByKey: { [any]: number } = {}
+
+function BuildServiceServer:init()
+	self.networker = Networker.server.new("BuildService", self, {
+		self.attemptBuild,
+	})
+
+	-- CLEANUP COOLDOWN CACHE WHEN PLAYERS LEAVE
+	Players.PlayerRemoving:Connect(function(player: Player)
+		lastBuildTimeByKey[player] = nil
+	end)
 end
 
-function BuildServiceServer.attemptBuild(self: BuildServiceServer, player: Player, cf: CFrame)
-    local timeSinceLastBuild = os.time() - self.previousBuildTime
-    if timeSinceLastBuild < BUILD_COOLDOWN then
-        warn("Player " .. player.Name .. " is building too quickly! Ignoring build request.")
-        return
-    end
-    
-    self.previousBuildTime = os.time()
+function BuildServiceServer:attemptBuild(player: Player, cf: CFrame)
+	if self:isInCooldown(player) then
+		warn("Player " .. player.Name .. " is building too quickly! Ignoring build request.")
+		return false
+	end
 
-    local spike = Spike.new(cf)
-    task.wait(10)
-    spike:destroy()
+	lastBuildTimeByKey[player] = os.clock()
+
+	local spike = Spike.new(cf)
+	task.delay(10, function()
+		spike:destroy()
+	end)
+
+	return true
 end
 
--- MEMBER VARIABLES ARE DEFINED WITH INSIDE "& {}"
+function BuildServiceServer:isInCooldown(player: Player): boolean
+	return self:getCooldown(player) < BUILD_COOLDOWN
+end
+
+function BuildServiceServer:getBuildCooldown(): number
+	return BUILD_COOLDOWN
+end
+
+function BuildServiceServer:getCooldown(player: Player): number
+	local lastBuildTime = lastBuildTimeByKey[player]
+	if lastBuildTime == nil then
+		return math.huge
+	end
+
+	return os.clock() - lastBuildTime
+end
+
+-- MEMBER VARIABLES ARE DEFINED INSIDE "& {}"
 type BuildServiceServer = typeof(BuildServiceServer) & {
-    previousBuildTime: number,
-    networker: Networker.Server
+	networker: Networker.Server,
 }
 
 return BuildServiceServer :: BuildServiceServer
