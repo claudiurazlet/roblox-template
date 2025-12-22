@@ -33,8 +33,29 @@
           "$className": "Folder",
           "Core": {
             "$className": "Folder",
+            "Configs": {
+              "$path": "src/Modules/Core/Configs.luau"
+            },
             "Greeting": {
               "$path": "src/Modules/Core/Greeting.luau"
+            }
+          },
+          "Game": {
+            "$className": "Folder",
+            "Items": {
+              "$path": "src/Modules/Game/Items.luau"
+            }
+          },
+          "Math": {
+            "$className": "Folder",
+            "RollOdds": {
+              "$path": "src/Modules/Math/RollOdds.luau"
+            }
+          },
+          "Platform": {
+            "$className": "Folder",
+            "GetCharacterFromUserId": {
+              "$path": "src/Modules/Platform/GetCharacterFromUserId.luau"
             }
           },
           "Test": {
