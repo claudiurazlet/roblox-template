@@ -17,7 +17,7 @@ In this repo it is used by:
 
 ## Where it lives / installation
 
-- Wally dependency: see [`wally.toml`](../wally.toml) (`Networker = "leifstout/networker@0.3.0"`).
+- Wally dependency: see [`wally.toml`](../wally.toml) (`Networker = "leifstout/networker@0.3.1"`).
 - Mounted under `ReplicatedStorage.Packages` via Rojo: see [`default.project.json`](../default.project.json).
 - Required in Luau like:
 

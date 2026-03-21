@@ -22,6 +22,13 @@ Use these notes when editing gameplay code, services, modules, UI, or startup fi
 - `src/Startup` should stay focused on startup entrypoints rather than deep feature logic.
 - `src/UI` contains React or ReactRoblox UI, hooks, screens, stories, and store code.
 
+## Template stack defaults
+
+- For new UI work, default to the existing React + ReactRoblox stack unless the task explicitly changes frontend direction.
+- For new player-data work, prefer `Dataservice` plus `ServicePlayerData` as the starting point when the higher-level workflow fits the feature.
+- Treat `ProfileService` as an available server-side fallback or lower-level dependency, not the first default for new template code.
+- Package presence in `wally.toml` does not automatically mean the package is already wired into current gameplay code; document and integrate deliberately.
+
 ## Replication boundaries
 
 - `Client.luau` and `Utils.luau` are expected to land in `ReplicatedStorage`.
