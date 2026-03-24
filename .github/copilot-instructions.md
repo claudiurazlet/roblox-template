@@ -47,3 +47,17 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 ## Documentation
 
 - Prefer these local docs before guessing workflow details: `Readmes/genrojotree-setup.md`, `Readmes/README.md`, `Readmes/networker.md`, and `Readmes/testez.md`.
+- When screenshots, mockups, or visual references are added to the repository, treat them as design guidance rather than authoritative runtime data unless the task says otherwise.
+- Prefer committing durable visual references that the team will reuse, rather than one-off scratch images.
+
+## Early Prototyping
+
+- For initial gameplay implementations, prefer simple placeholder assets such as blocks, spheres, capsules, plain UI placeholders, and other low-complexity stand-ins so logic, networking, and game flow can be validated first.
+- Do not introduce polished or heavy assets early unless the task explicitly depends on final presentation, scale testing, or asset-specific behavior.
+  
+## Roblox Studio boundary
+
+- Assume the agent can inspect and edit only what exists in the workspace unless the user provides exported asset data or screenshots.
+- Do not assume direct access to the live Roblox Studio DataModel, Explorer state, tags, CollectionService setup, or manually configured instances that are not represented in project files.
+- When a task depends on Studio-only setup such as tags, attributes, asset placement, or instance properties, propose concrete names and a short manual checklist instead of blocking on missing Studio access.
+- Prefer stable, descriptive names for manual Studio configuration so follow-up code and docs can reference them consistently.

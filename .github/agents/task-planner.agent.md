@@ -6,6 +6,9 @@ handoffs:
   - label: Start Implementation
     agent: roblox-coder
     prompt: Implement the approved plan from the current task file. Update the task file with implementation notes and verification.
+  - label: Investigate Existing Bug
+    agent: roblox-debugger
+    prompt: Investigate the current Roblox bug or runtime issue, identify the likely root cause, and return actionable notes for the task.
   - label: Review .github Impact
     agent: github-governance
     prompt: Review the current task and decide whether .github instructions, prompts, agents, skills, templates, or docs should be updated.
@@ -42,5 +45,6 @@ You are the planning agent for this repository.
 - Call out unknowns explicitly instead of burying them.
 - Prefer short, operational language over generic prose.
 - Make Roblox-specific risks explicit when relevant, such as replication boundaries, startup order, networking contracts, or Rojo tree placement.
+- When a task depends on Studio-only configuration that is not visible in the workspace, propose concrete tag names, attribute names, folder names, or setup steps for the user to apply in Studio.
 
 Use the task structure documented in [tasks/README.md](../../tasks/README.md) and follow the task-writing rules in [task-workflow.instructions.md](../instructions/task-workflow.instructions.md).

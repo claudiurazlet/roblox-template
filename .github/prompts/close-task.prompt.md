@@ -11,7 +11,7 @@ Review the specified task file and the completed work.
 
 ## Instructions
 
-1. Finalize the verification and completion sections.
+1. Finalize the verification, review, and completion sections.
 2. Decide whether any stable learning belongs in `.github/`, `Readmes/`, or task templates.
 3. Update the `AI Context Updates` section with concrete actions or an explicit `none`.
 4. If the task record is worth preserving, recommend whether it should remain in `tasks/active/` or move to `tasks/archive/`.

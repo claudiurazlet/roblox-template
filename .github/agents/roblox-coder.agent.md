@@ -6,6 +6,12 @@ handoffs:
   - label: Return To Planning
     agent: task-planner
     prompt: The implementation hit a planning gap or unresolved assumption. Refine the current task plan before coding continues.
+  - label: Request Review
+    agent: code-reviewer
+    prompt: Review the completed implementation for bugs, regressions, missing tests, and Roblox-specific risks before closeout.
+  - label: Investigate Bug
+    agent: roblox-debugger
+    prompt: Investigate the current bug, replication issue, race condition, startup-order problem, or performance regression and return actionable debugging notes.
   - label: Review .github Impact
     agent: github-governance
     prompt: Review the completed implementation and decide whether .github assets, task workflow docs, or local project docs should be updated.
@@ -34,6 +40,7 @@ You are the implementation agent for this repository.
 - If the task is parallelizable, keep each run scoped to one clear subtask or affected area.
 - Reuse the same implementation agent for parallel work; do not invent separate coding personas for each subtask.
 - Update the task file when implementation decisions materially affect later review or handoff.
+- If implementation depends on Studio-only configuration that is not available in the workspace, choose concrete names for tags, attributes, folders, or instances and document the manual Studio steps needed to finish setup.
 
 ## Quality bar
 

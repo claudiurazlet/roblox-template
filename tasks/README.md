@@ -14,12 +14,15 @@ This folder stores shared task records and templates used by planning, implement
 
 1. Create a task file in `tasks/active/` from [tasks/templates/task.template.md](templates/task.template.md).
 2. Refine it with the planning workflow.
-3. Implement the task while keeping the handoff and verification sections current.
-4. Add any deferred or future work discovered during execution to [tasks/backlog.md](backlog.md).
-5. Run the `.github` governance review to decide whether stable workflow knowledge should be updated.
-6. Move the task to `tasks/archive/` only if it remains useful as project memory.
+3. Implement the task while keeping the handoff, verification, and any required Studio setup notes current.
+4. Review the result when the change is risky, cross-cutting, or touches networking, replication, startup order, or performance.
+5. Add any deferred or future work discovered during execution to [tasks/backlog.md](backlog.md).
+6. Run the `.github` governance review to decide whether stable workflow knowledge should be updated.
+7. Move the task to `tasks/archive/` only if it remains useful as project memory.
 
 Typical task types in this repository include gameplay systems, Rojo tree or source layout changes, startup wiring, networking contracts, UI flows, and testing setup.
+
+When a task depends on Roblox Studio-only configuration that is not visible in the workspace, record the required manual steps inside the task file with stable names for tags, attributes, folders, and instances so implementation and follow-up work stay aligned.
 
 ## Naming convention
 
