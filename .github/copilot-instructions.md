@@ -49,6 +49,7 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 - Prefer these local docs before guessing workflow details: `Readmes/genrojotree-setup.md`, `Readmes/README.md`, `Readmes/networker.md`, and `Readmes/testez.md`.
 - When screenshots, mockups, or visual references are added to the repository, treat them as design guidance rather than authoritative runtime data unless the task says otherwise.
 - Prefer committing durable visual references that the team will reuse, rather than one-off scratch images.
+- Use `Readmes/references/` for durable visual references shared across multiple tasks, and keep task-specific images with the task or in task-local notes instead of turning the shared references folder into a dump.
 
 ## Early Prototyping
 
