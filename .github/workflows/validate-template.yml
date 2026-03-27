@@ -1,0 +1,34 @@
+name: Validate Template
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Smoke test project bootstrap script
+        run: node tools/initProject.js --name "CI Smoke Test" --repo "example/ci-smoke-test" --dry-run
+
+      - name: Regenerate Rojo project
+        run: npm run build:rojo
+
+      - name: Verify generated project is committed
+        shell: pwsh
+        run: git diff --exit-code -- default.project.json

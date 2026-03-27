@@ -4,6 +4,8 @@
 
 `tools/genRojoTree.js` is a script that automates management of the Roblox project structure: it keeps a compact, developer-friendly layout in VS Code and generates the Rojo `default.project.json` file automatically.
 
+If you are starting a brand-new game from this repository, run `npm run init:project -- --name "My Game" --repo "your-org/my-game"` before doing the rest of this setup so the project identity is updated consistently.
+
 ## Goals
 
 - **Compact structure**: keep the repo nicely organized in VS Code

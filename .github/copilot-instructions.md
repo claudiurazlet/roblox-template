@@ -6,6 +6,7 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 
 - Treat `default.project.json` as generated output. Do not edit it manually unless the user explicitly asks for that exact file.
 - The source of truth for Rojo tree generation is `tools/genRojoTree.js`.
+- When creating a new repository from this template, prefer `npm run init:project -- --name "<Game Name>" --repo "<owner>/<repo>"` over manual renaming.
 - Before making changes that affect project structure under `src/`, assume the `Watch Rojo Tree` VS Code task should be running so `default.project.json` stays in sync.
 - If a task or script touches the Rojo tree, prefer updating `tools/genRojoTree.js`, `package.json`, or `.vscode/tasks.json` instead of editing generated JSON.
 
@@ -47,6 +48,7 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 ## Documentation
 
 - Prefer these local docs before guessing workflow details: `Readmes/genrojotree-setup.md`, `Readmes/README.md`, `Readmes/networker.md`, and `Readmes/testez.md`.
+- For new repository bootstrap steps, prefer `Readmes/new-project-checklist.md`.
 - When screenshots, mockups, or visual references are added to the repository, treat them as design guidance rather than authoritative runtime data unless the task says otherwise.
 - Prefer committing durable visual references that the team will reuse, rather than one-off scratch images.
 - Use `Readmes/references/` for durable visual references shared across multiple tasks, and keep task-specific images with the task or in task-local notes instead of turning the shared references folder into a dump.
