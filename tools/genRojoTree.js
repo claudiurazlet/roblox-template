@@ -3,17 +3,21 @@ const path = require("path");
 
 const BASE_PATH = path.join(__dirname, "../src");
 
+function toPosix(p) {
+  return p.split(path.sep).join("/");
+}
+
+function normalizePath(p) {
+  return toPosix(p).toLowerCase();
+}
+
 const BLACKLISTED_DIRS = [
-  toPosix(path.join(BASE_PATH, "UI")),
-  toPosix(path.join(BASE_PATH, "Startup")),
+  normalizePath(path.join(BASE_PATH, "UI")),
+  normalizePath(path.join(BASE_PATH, "Startup")),
 ];
 
 // Tracks folders that are "claimed" by init.luau
 const initClaimedFolders = new Set();
-
-function toPosix(p) {
-  return p.split(path.sep).join("/");
-}
 
 function toPascalCase(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
@@ -84,16 +88,18 @@ const serverRoot = tree.tree.ServerScriptService;
 
 // Recursively walk all files
 function walk(dir, callback) {
-  if (BLACKLISTED_DIRS.includes(toPosix(dir))) return;
+  if (BLACKLISTED_DIRS.includes(normalizePath(dir))) return;
 
-  fs.readdirSync(dir, { withFileTypes: true }).forEach((entry) => {
+  fs.readdirSync(dir, { withFileTypes: true })
+    .sort((left, right) => left.name.localeCompare(right.name))
+    .forEach((entry) => {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       walk(full, callback);
     } else if (entry.isFile() && entry.name.endsWith(".luau")) {
       callback(full);
     }
-  });
+    });
 }
 
 walk(BASE_PATH, (filepath) => {

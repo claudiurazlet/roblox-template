@@ -13,6 +13,7 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 ## genRojoTree conventions
 
 - The repository intentionally keeps a compact VS Code layout and maps files to Roblox services through `tools/genRojoTree.js`.
+- Preserve the intended casing of top-level source folders such as `src/Services`, `src/Startup`, and `src/UI`; Windows can hide case-only drift that later breaks generated path consistency in CI.
 - `Client.luau` and `Utils.luau` are expected to end up in `ReplicatedStorage`.
 - `Server.luau` is expected to end up in `ServerScriptService`.
 - `src/Startup/Client.client.luau` maps to `StarterPlayer/StarterPlayerScripts`.
