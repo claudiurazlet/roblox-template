@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const BASE_PATH = path.join(__dirname, "../src");
+const UI_PATH = path.join(BASE_PATH, "UI");
 
 function toPosix(p) {
   return p.split(path.sep).join("/");
@@ -64,7 +65,6 @@ const tree = {
         Modules: { $className: "Folder", }
       },
       Packages: { $path: "Packages", },
-      UI: { $path: "src/UI", },
     },
 
     ServerScriptService: {
@@ -82,6 +82,10 @@ const tree = {
     },
   }
 };
+
+if (fs.existsSync(UI_PATH)) {
+  tree.tree.ReplicatedStorage.UI = { $path: "src/UI", };
+}
 
 const sharedRoot = tree.tree.ReplicatedStorage.Shared;
 const serverRoot = tree.tree.ServerScriptService;
