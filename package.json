@@ -8,6 +8,11 @@
     "test:headless": "node -e \"require('fs').mkdirSync('out', { recursive: true })\" && rojo build default.project.json -o out/test-place.rbxlx && run-in-roblox --place out/test-place.rbxlx --script scripts/run-tests.server.luau",
     "init:project": "node tools/initProject.js",
     "build:rojo": "node tools/genRojoTree.js",
+    "build:luau:sourcemap": "rojo sourcemap default.project.json --output sourcemap.json --include-non-scripts",
+    "check:luau:analyze": "node tools/runLuauAnalyze.js",
+    "check:luau": "npm run build:rojo && npm run build:luau:sourcemap && npm run check:luau:analyze",
+    "export:luau:diagnostics": "node tools/exportLuauDiagnostics.js",
+    "export:luau:diagnostics:all": "node tools/exportLuauDiagnostics.js --scope all",
     "watch:rojo": "chokidar \"src/**/*\" -c \"npm run build:rojo\""
   },
   "repository": {

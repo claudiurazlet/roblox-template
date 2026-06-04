@@ -19,7 +19,7 @@ Use this folder for durable visual references that should survive across multipl
 ## Shared references vs task-specific references
 
 - Put an image here when it represents a reusable direction for the project.
-- Put an image next to a task file, or reference it from the task file, when it exists only to support that one task.
+- Put a task-specific screenshot under `tasks/assets/<task-slug>/` and reference it directly from the task markdown when it exists only to support that one task.
 - If a task-specific image later becomes broadly useful, move or copy it here and add a short explanation.
 
 ## Recommended organization

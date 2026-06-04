@@ -1,170 +1,97 @@
-# genRojoTree setup guide
+# Rojo Tree And Diagnostics
 
-## Introduction
+This project keeps a compact source layout in `src/` and generates `default.project.json` with `tools/genRojoTree.js`.
 
-`tools/genRojoTree.js` is a script that automates management of the Roblox project structure: it keeps a compact, developer-friendly layout in VS Code and generates the Rojo `default.project.json` file automatically.
+## Generated Rojo Tree
 
-If you are starting a brand-new game from this repository, run `npm run init:project -- --name "My Game" --repo "your-org/my-game"` before doing the rest of this setup so the project identity is updated consistently.
+- `default.project.json` is generated output. Do not edit it by hand for normal workflow changes.
+- `tools/genRojoTree.js` is the source of truth for Roblox service placement.
+- Run `npm run build:rojo` after structural changes.
+- Run `npm run watch:rojo` or the VS Code `Watch Rojo Tree` task while iterating on source layout.
 
-## Goals
+If you are starting a brand-new game from this repository, run `npm run init:project -- --name "My Game" --repo "your-org/my-game"` first so project identity is updated consistently.
 
-- **Compact structure**: keep the repo nicely organized in VS Code
-- **Automatic placement**: files are mapped to the correct Roblox services:
-  - `Client.luau` and `Utils.luau` → **ReplicatedStorage**
-  - `Server.luau` → **ServerScriptService**
-- **Hot reloading**: `default.project.json` is regenerated whenever `src/` changes
+## Source Layout
 
-## Credits
-
-- Original project: [leifstout/genRojoTree](https://github.com/leifstout/genRojoTree)
-- YouTube tutorial reference: [Roblox TypeScript Tutorial](https://www.youtube.com/watch?v=ouNVJcGH9MA) (timestamp: 6:10:16)
-
-## Project structure (in this repo)
-
-This repository uses these top-level folders under `src/`:
-
-```
+```text
 src/
-├── Classes/
-├── Modules/
-├── Services/
-│   └── <ServiceName>/
-│       ├── Client.luau
-│       ├── Server.luau
-│       └── Utils.luau (optional)
-├── Startup/
-│   ├── Client.client.luau
-│   └── Server.server.luau
-└── UI/
+  Classes/
+  Modules/
+  Services/
+    <ServiceName>/
+      Client.luau
+      Server.luau
+      Utils.luau
+  Startup/
+    Client.client.luau
+    Server.server.luau
+  UI/
 ```
 
-## Full setup
+## Mapping Rules
 
-### 1) VS Code configuration
+- `src/Startup/Client.client.luau` maps to `StarterPlayer/StarterPlayerScripts`.
+- `src/Startup/Server.server.luau` maps to `ServerScriptService`.
+- `src/UI` maps directly to `ReplicatedStorage.UI`.
+- `Client.luau`, `Utils.luau`, `Types.luau`, and shared modules map to `ReplicatedStorage.Shared`.
+- `Server.luau` and filenames containing `server` map to `ServerScriptService`.
+- `src/UI` and `src/Startup` are handled explicitly and are skipped by the generic recursive scan.
+- `init.luau` claims its parent folder in the generated tree, so child files under that claimed folder are not mapped individually.
+- Folder names are PascalCased in the generated tree.
 
-Two files are typically used under `.vscode/`.
+## Tool Scripts
 
-#### `.vscode/settings.json`
+- `tools/genRojoTree.js`: regenerates `default.project.json` from the current `src/` tree.
+- `tools/runLuauAnalyze.js`: wraps `luau-lsp analyze`, loading Roblox engine definitions from the Luau LSP cache and `testez.d.luau`.
+- `tools/exportLuauDiagnostics.js`: refreshes Rojo output and the sourcemap, runs the analyzer, and writes grouped reports under `tasks/local/diagnostics/`.
+- `tools/initProject.js`: bootstrap helper for creating a new project from this template.
 
-```json
-{
-    "stylua.targetReleaseVersion": "latest",
-    "workbench.editor.customLabels.patterns": {
-        "**/init.lua": "${dirname} (${filename}.${extname})",
-        "**/init.luau": "${dirname} (${filename}.${extname})",
-        "**/Client.luau": "${dirname}${filename}.${extname}",
-        "**/Server.luau": "${dirname}${filename}.${extname}",
-        "**/Utils.luau": "${dirname}${filename}.${extname}",
-        "**/*.json": "${filename}",
-        "**/*.js": "${filename}"
-    }
-}
-```
+## Diagnostics Commands
 
-This makes tab names more descriptive (e.g. `TestServiceClient.luau` instead of `Client.luau`).
+- `npm run check:luau`: regenerate Rojo, refresh `sourcemap.json`, and run `luau-lsp analyze` across `src/` and `scripts/`.
+- `npm run export:luau:diagnostics`: export diagnostics for git-changed or untracked `src/**` files.
+- `npm run export:luau:diagnostics:all`: export diagnostics for all `src/**` files.
 
-#### `.vscode/tasks.json`
+The diagnostics exporter reflects saved-file static diagnostics. It does not read unsaved editor buffers or scrape the live VS Code Problems panel.
 
-```json
-{
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Watch Rojo Tree",
-            "type": "shell",
-            "command": "npm run watch:rojo",
-            "options": {
-                "shell": {
-                    "executable": "cmd.exe",
-                    "args": ["/d", "/c"]
-                }
-            },
-            "isBackground": true,
-            "problemMatcher": [],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        }
-    ]
-}
-```
+## VS Code Tasks
 
-### 2) Node.js initialization
+- `Watch Rojo Tree`: runs `npm run watch:rojo`.
+- `Check Luau Diagnostics`: runs `npm run check:luau`.
+- `Export Luau Diagnostics Report (Changed src)`: runs `npm run export:luau:diagnostics`.
+- `Export Luau Diagnostics Report (All src)`: runs `npm run export:luau:diagnostics:all`.
+
+## Setup
 
 From the repo root:
 
 ```bash
 npm install
-```
-
-This repo already includes `chokidar-cli` as a dev dependency in `package.json`.
-
-### 3) NPM scripts
-
-The key scripts are in `package.json`:
-
-- `npm run build:rojo` → generates/updates `default.project.json`
-- `npm run watch:rojo` → watches `src/**/*` and regenerates on changes
-
-### 4) Rojo + Rokit
-
-Install tools (if not already installed):
-
-```bash
-rokit.exe self-update
 rokit install
+wally install
 ```
 
-### 5) Start watch mode
+Then in VS Code:
 
-1. Open VS Code
-2. Press `Ctrl+Shift+P`
-3. Choose "Tasks: Run Task"
-4. Select "Watch Rojo Tree"
+1. Press `Ctrl+Shift+P`.
+2. Choose "Tasks: Run Task".
+3. Select `Watch Rojo Tree`, `Check Luau Diagnostics`, or one of the diagnostics export tasks.
 
-From now on, changes under `src/` will update `default.project.json` automatically.
+## What To Commit
 
-## Customization
-
-### Project name
-
-In `tools/genRojoTree.js`, change the `name` property:
-
-```js
-const tree = {
-    name: "your-project-name",
-    tree: {
-        // ...
-    },
-}
-```
-
-### CustomPackages removal (if present)
-
-If `genRojoTree.js` contains a `CustomPackages` section under `tree.ReplicatedStorage`, remove it if you do not need it.
-
-## What to commit
-
-- Commit `default.project.json` (generated output) but do not edit it manually.
-- Commit `package.json` and `package-lock.json`.
-- Do not commit `sourcemap.json` (it is regenerated).
-
-If `sourcemap.json` causes issues, delete it and restart VS Code so the Luau Language Server regenerates it.
+- Commit `default.project.json` after regenerating it.
+- Commit source, docs, `package.json`, `package-lock.json`, and tool script changes.
+- Do not commit `sourcemap.json`, `out/`, `tasks/local/`, `Packages/`, or `ServerPackages/`.
 
 ## Troubleshooting
 
-- Task does not start: ensure `npm install` has been run.
-- File not updating: ensure the `watch:rojo` task is running and `tools/genRojoTree.js` is correct.
-- Sync issues: delete `sourcemap.json` and restart VS Code.
+- If `default.project.json` is stale, run `npm run build:rojo`.
+- If `sourcemap.json` is stale or Luau navigation is confused, run `npm run build:luau:sourcemap` or delete `sourcemap.json` and let tooling recreate it.
+- If Roblox engine definitions are missing, open VS Code, run `Luau: Download API Types`, then rerun diagnostics.
+- If `luau-lsp`, `rojo`, `wally`, or `run-in-roblox` is missing, run `rokit install`.
+- If packages are missing, run `wally install`.
 
-## How it works (high level)
+## Credits
 
-`tools/genRojoTree.js`:
-
-1. Recursively scans `src/`
-2. Detects destinations based on filenames (server vs client)
-3. Generates the appropriate structure in `default.project.json`
-4. Maps `*Server.luau` files to **ServerScriptService**
-5. Maps everything else to **ReplicatedStorage**
-6. Applies PascalCase naming for folders
+- Original generator idea: [leifstout/genRojoTree](https://github.com/leifstout/genRojoTree)
+- YouTube tutorial reference: [Roblox TypeScript Tutorial](https://www.youtube.com/watch?v=ouNVJcGH9MA)

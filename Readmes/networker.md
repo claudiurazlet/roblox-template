@@ -95,6 +95,37 @@ Tip: keep action names as verbs (`attemptBuild`, `requestFoo`, `setBar`) and alw
 
 ---
 
+## Replicated State Pattern
+
+Some services can let the server push live runtime state to the client with `networker:set(player, key, value)`. When the client consumes that data on a gameplay, UI, or render-step hot path, use this pattern:
+
+1. Create the client instance with `Networker.client.new("MyService", self)`.
+2. Immediately read any already-populated replicated fields from the client object and seed a validated local cache.
+3. Attach `getServerChangedSignal(key)` listeners to keep that cache current.
+
+Practical notes:
+
+- Do not assume `getServerChangedSignal(key)` replays values that arrived before the listener was attached.
+- If several fields must stay coherent on the same frame, prefer one server-authored envelope such as `runtimeSnapshot` instead of several loosely related keys.
+- Keep gameplay and UI hot paths reading from a validated local cache rather than directly from raw transport fields when malformed or partial startup state would otherwise cause nil math, UI errors, or one-frame mismatches.
+
+## Typing Note
+
+The current Luau or LSP setup may reject nominal annotations such as `Networker.Client` or `Networker.Server` in some files even though the package exports those types.
+
+When that happens, prefer a local concrete alias:
+
+```luau
+local Networker = require(ReplicatedStorage.Packages.Networker)
+
+type NetworkerClient = typeof(Networker.client.new("MyService", {} :: any))
+type NetworkerServer = typeof(Networker.server.new("MyService", {} :: any, {} :: { any }))
+```
+
+This is preferable to leaving the annotation unresolved or falling back to `any` for the whole service.
+
+---
+
 ## Testing (recommended in this template)
 
 This repo already includes TestEZ and a runner. BuildService logic can be tested without networking:
@@ -120,4 +151,3 @@ Testing server logic directly (without remotes) is good for deterministic tests 
 - Mounted package: `ReplicatedStorage.Packages.Networker` (via Rojo; see [`default.project.json`](../default.project.json))
 - Dependency list: [`wally.toml`](../wally.toml)
 - Upstream repository: https://github.com/leifstout/networker
-

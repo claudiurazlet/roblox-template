@@ -6,7 +6,8 @@ This guide explains how TestEZ is used in this project, using the existing code 
 
 - TestEZ is installed via Wally (`roblox/testez@0.4.1`). Run `wally install` to populate `Packages/_Index` with TestEZ.
 - `run-in-roblox` is installed via Rokit (`rojo-rbx/run-in-roblox@0.3.0`) for headless test execution.
-- Specs live under `ReplicatedStorage.Shared.Modules.Test.Specs` (see [`default.project.json`](../default.project.json)).
+- Shared specs live under `ReplicatedStorage.Shared.Modules.Test.Specs` (see [`default.project.json`](../default.project.json)).
+- When `ServerScriptService.Modules.Test.Specs` exists, the same headless runner executes that server-side spec root in the same `npm test` pass.
 - The runner is in `Shared.Modules.Test.Runner` and exports `run` and `getTestEZ`.
 
 ## Writing a spec
@@ -52,7 +53,7 @@ This repo includes a type definition file at [`testez.d.luau`](../testez.d.luau)
 
 ## Runner
 
-[`src/Modules/Test/Runner.luau`](../src/Modules/Test/Runner.luau) loads TestEZ from `Packages/_Index`, finds the `Specs` folder, and runs tests with the text reporter.
+[`src/Modules/Test/Runner.luau`](../src/Modules/Test/Runner.luau) loads TestEZ from `Packages/_Index`, gathers the shared specs root and, when present, the server-side specs root, and runs both with the text reporter.
 
 ## Running tests in Studio
 
@@ -84,10 +85,13 @@ rojo build default.project.json -o out/test-place.rbxlx && \
 run-in-roblox --place out/test-place.rbxlx --script scripts/run-tests.server.luau
 ```
 
+`out/test-place.rbxlx` is a generated place file created only to feed `run-in-roblox`. Treat it as disposable output, not as the normal source of truth when tests fail. For routine debugging, inspect the terminal output from TestEZ, the package script, and the runner scripts instead of reading the generated XML.
+
 Script behavior (`scripts/run-tests.server.luau`):
 
 - requires the test module (`Shared.Modules.Test`)
 - runs `Test.run()`
+- prints the structured `results` table after the TextReporter has already written the per-spec output and summary to the console
 - exits with an error code if there are failures (so CI can fail)
 
 ## Useful matchers
@@ -100,6 +104,7 @@ Script behavior (`scripts/run-tests.server.luau`):
 
 ## Tips
 
-- Keep tested modules under `Shared.Modules` so the runner can require them easily.
+- Keep shared specs under `Shared.Modules.Test.Specs` so the runner can require them easily.
+- Put server-only specs under `ServerScriptService.Modules.Test.Specs` when they need server services; `npm test` will include that root automatically when it exists.
 - Organize specs by feature (e.g. `Player.spec.luau`, `Inventory.spec.luau`).
 - Run `wally install` whenever you add/update Wally dependencies before running tests.

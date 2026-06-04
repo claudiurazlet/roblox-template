@@ -17,6 +17,45 @@
         "kind": "build",
         "isDefault": true
       }
+    },
+    {
+      "label": "Check Luau Diagnostics",
+      "type": "shell",
+      "command": "npm run check:luau",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/d", "/c"]
+        }
+      },
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Export Luau Diagnostics Report (Changed src)",
+      "type": "shell",
+      "command": "npm run export:luau:diagnostics",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/d", "/c"]
+        }
+      },
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Export Luau Diagnostics Report (All src)",
+      "type": "shell",
+      "command": "npm run export:luau:diagnostics:all",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/d", "/c"]
+        }
+      },
+      "problemMatcher": [],
+      "group": "test"
     }
   ]
 }

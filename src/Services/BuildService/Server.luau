@@ -3,6 +3,8 @@ local Players = game:GetService("Players")
 local Networker = require(ReplicatedStorage.Packages.Networker)
 local Spike = require(ReplicatedStorage.Shared.Classes.Spike)
 
+type NetworkerServer = typeof(Networker.server.new("BuildService", {}))
+
 local BuildServiceServer = {}
 
 local BUILD_COOLDOWN = 0.1 -- seconds
@@ -54,7 +56,7 @@ end
 
 -- MEMBER VARIABLES ARE DEFINED INSIDE "& {}"
 type BuildServiceServer = typeof(BuildServiceServer) & {
-	networker: Networker.Server,
+	networker: NetworkerServer,
 }
 
 return BuildServiceServer :: BuildServiceServer

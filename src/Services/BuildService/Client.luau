@@ -4,6 +4,8 @@ local UserInputService = game:GetService("UserInputService")
 local Networker = require(ReplicatedStorage.Packages.Networker)
 local camera = workspace.CurrentCamera
 
+type NetworkerClient = typeof(Networker.client.new("BuildService", {}))
+
 local BuildServiceClient = {}
 
 function BuildServiceClient.init(self: BuildServiceClient)
@@ -28,7 +30,7 @@ end
 
 -- MEMBER VARIABLES ARE DEFINED WITH INSIDE "& {}"
 type BuildServiceClient = typeof(BuildServiceClient) & {
-    networker: Networker.Client,
+    networker: NetworkerClient,
 }
 
 return BuildServiceClient :: BuildServiceClient

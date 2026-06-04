@@ -8,6 +8,7 @@ This folder stores shared task records and templates used by planning, implement
 - `tasks/templates/`: versioned task templates and reusable markdown structures.
 - `tasks/active/`: active shared task files that are worth keeping in the repository while work is in progress.
 - `tasks/archive/`: completed task files preserved for project memory and later reference.
+- `tasks/assets/`: committed task-specific screenshots and lightweight visual context.
 - `tasks/local/`: local scratch notes and temporary handoff files. This folder is ignored by git.
 
 ## Recommended lifecycle
@@ -35,4 +36,5 @@ When a task depends on Roblox Studio-only configuration that is not visible in t
 - Commit templates, instructions, prompts, agents, skills, and task files that capture durable project decisions.
 - Avoid committing noisy status churn.
 - Use `tasks/local/` for personal notes, temporary decompositions, or experiments that should not enter project history.
+- Store committed task screenshots under `tasks/assets/<task-slug>/` when they need to survive task archival.
 - Prefer resetting imported or obsolete task records rather than keeping irrelevant history from another repository.
