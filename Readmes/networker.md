@@ -1,119 +1,95 @@
-# Networker quick guide (BuildService example)
+# Networker Services
 
-This guide explains what **Networker** is for and how to use it in this project, using [`BuildServiceServer`](../src/Services/BuildService/Server.luau) and [`BuildServiceClient`](../src/Services/BuildService/Client.luau) as a reference.
+Use this guide when a service needs client-server calls or server-pushed client state. The local reference implementation is `BuildService`.
 
-## What Networker is for
+## Local References
 
-**Networker** is a package that simplifies **Client ⇄ Server** communication in Roblox. It wraps the usual `RemoteEvent`/`RemoteFunction` plumbing and provides a compact API to:
+- Dependency: `Networker = "leifstout/networker@0.3.1"` in [../wally.toml](../wally.toml).
+- Mounted package: `ReplicatedStorage.Packages.Networker`.
+- Server example: [../src/Services/BuildService/Server.luau](../src/Services/BuildService/Server.luau).
+- Client example: [../src/Services/BuildService/Client.luau](../src/Services/BuildService/Client.luau).
+- Package source: `Packages/_Index/leifstout_networker@0.3.1/networker/src/`.
 
-- expose server “actions” (e.g. `attemptBuild`) callable from the client
-- automatically provide the calling `Player` to server handlers (typical pattern: `serverMethod(self, player, ...)`)
-- centralize networking per service (one “channel” per service, e.g. `"BuildService"`)
+## Basic Pattern
 
-In this repo it is used by:
+Server:
 
-- Server side: [`BuildServiceServer`](../src/Services/BuildService/Server.luau)
-- Client side: [`BuildServiceClient`](../src/Services/BuildService/Client.luau)
+```luau
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Networker = require(ReplicatedStorage.Packages.Networker)
 
-## Where it lives / installation
+local MyServiceServer = {}
 
-- Wally dependency: see [`wally.toml`](../wally.toml) (`Networker = "leifstout/networker@0.3.1"`).
-- Mounted under `ReplicatedStorage.Packages` via Rojo: see [`default.project.json`](../default.project.json).
-- Required in Luau like:
+function MyServiceServer.init(self: MyServiceServer)
+	self.networker = Networker.server.new("MyService", self, {
+		self.requestAction,
+	})
+end
 
-  - Server: `local Networker = require(ReplicatedStorage.Packages.Networker)`
-  - Client: `local Networker = require(ReplicatedStorage.Packages.Networker)`
+function MyServiceServer.requestAction(self: MyServiceServer, player: Player, payload: any)
+	-- Validate payload and enforce authority here.
+	return true
+end
+```
 
-## Recommended pattern in this template (Services)
+Client:
 
-The template structure (and the `genRojoTree` generation) typically maps services like this:
+```luau
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Networker = require(ReplicatedStorage.Packages.Networker)
 
-- `src/Services/<ServiceName>/Server.luau` → **ServerScriptService**
-- `src/Services/<ServiceName>/Client.luau` → **ReplicatedStorage**
+local MyServiceClient = {}
 
-See: [`tools/genRojoTree.js`](../tools/genRojoTree.js)
+function MyServiceClient.init(self: MyServiceClient)
+	self.networker = Networker.client.new("MyService", self)
+end
 
----
+function MyServiceClient.sendAction(self: MyServiceClient, payload: any)
+	self.networker:fire("requestAction", payload)
+end
+```
 
-## Full example: BuildService
+Server handlers exposed through `Networker.server.new` receive `player` from Roblox on the server. The client cannot choose that argument.
 
-### 1) Server: register an action called `attemptBuild`
+## API To Use
 
-In [`BuildServiceServer`](../src/Services/BuildService/Server.luau), initialization registers the exposed methods:
+- Client to server fire-and-forget: `clientNetworker:fire("methodName", ...)`.
+- Client to server request/response: `clientNetworker:fetch("methodName", ...)`.
+- Server to selected clients: `serverNetworker:fire(playerOrPlayers, "methodName", ...)`.
+- Server to all clients: `serverNetworker:fireAll("methodName", ...)`.
+- Server to all except selected clients: `serverNetworker:fireAllExcept(playerOrPlayers, "methodName", ...)`.
+- Server-pushed state: `serverNetworker:set(playerOrPlayers, key, value)`.
+- Server-pushed state to all clients: `serverNetworker:setAll(key, value)`.
+- Client state listener: `clientNetworker:getServerChangedSignal(key)`.
 
-- `Networker.server.new("BuildService", self, { self.attemptBuild })`
+Use `:fire` when the client does not need the return value. Use `:fetch` when UI or gameplay must wait for a server result.
 
-This creates a service channel named `"BuildService"` and tells Networker that the client can call the `attemptBuild` action.
+## Authority Rules
 
-On the server, the handler signature is:
+- Treat every client argument as untrusted.
+- Validate permissions, distance, cooldowns, ownership, inventory state, and character state on the server.
+- Rate limit server actions that can be spammed.
+- Clean up per-player caches on `Players.PlayerRemoving`.
+- Keep networking code thin when possible; move deterministic rules into testable modules or service helpers.
 
-- `attemptBuild(self, player: Player, cf: CFrame)`
+`BuildService` shows the basic pattern: the client sends a build request, the server checks cooldown, creates the object, and clears per-player cooldown state when the player leaves.
 
-`player` is provided by the server runtime (so the client cannot choose who is calling).
+## Server-Pushed State
 
-Reference: [`BuildServiceServer.attemptBuild`](../src/Services/BuildService/Server.luau)
+Networker state updates call `module[key] = value` on the client and then fire the signal returned by `getServerChangedSignal(key)`.
 
-### 2) Client: call the action with `:fire`
+Recommended client pattern:
 
-In [`BuildServiceClient`](../src/Services/BuildService/Client.luau):
+1. Create the client networker in `init`.
+2. Seed local UI/gameplay cache from any fields already present on the client service.
+3. Listen with `getServerChangedSignal(key)` for future updates.
+4. Read hot-path UI or gameplay code from validated local cache, not raw transport fields.
 
-- `self.networker = Networker.client.new("BuildService", self)`
-- then, when the user clicks:
-  - `self.networker:fire("attemptBuild", cf)`
+Do not assume `getServerChangedSignal(key)` replays values sent before the listener existed. If several values must be coherent, send one server-authored snapshot table instead of several unrelated keys.
 
-Reference: [`BuildServiceClient.build`](../src/Services/BuildService/Client.luau)
+## Typing
 
-In this project the usage is **fire-and-forget**: the client sends a request and the server decides whether to accept or deny it (cooldown). The server returns `true/false` from `attemptBuild`, but the current client code does not consume that value.
-
-If you need UI feedback, design an explicit response path (server → client event), or use a request/response API if Networker supports it in your version.
-
-### 3) Server-authoritative logic + rate limiting (best practice)
-
-BuildService implements a server-side cooldown:
-
-- Cache: `lastBuildTimeByKey[player] = os.clock()`
-- Check: [`BuildServiceServer.isInCooldown`](../src/Services/BuildService/Server.luau)
-
-This matters because the client is not trusted: even if the client spams `:fire`, the server will ignore requests.
-
-The service also cleans up the cache when players leave:
-
-- `Players.PlayerRemoving:Connect(...)`
-
-Reference: [`BuildServiceServer.init`](../src/Services/BuildService/Server.luau)
-
----
-
-## Quick recipe: create a new service with Networker
-
-1. Create `src/Services/MyService/Server.luau`
-2. Create `src/Services/MyService/Client.luau`
-3. On the server, register methods with `Networker.server.new("MyService", self, { self.someAction })`
-4. On the client, create the client instance with `Networker.client.new("MyService", self)` and call `:fire("someAction", ...)`
-
-Tip: keep action names as verbs (`attemptBuild`, `requestFoo`, `setBar`) and always validate inputs on the server.
-
----
-
-## Replicated State Pattern
-
-Some services can let the server push live runtime state to the client with `networker:set(player, key, value)`. When the client consumes that data on a gameplay, UI, or render-step hot path, use this pattern:
-
-1. Create the client instance with `Networker.client.new("MyService", self)`.
-2. Immediately read any already-populated replicated fields from the client object and seed a validated local cache.
-3. Attach `getServerChangedSignal(key)` listeners to keep that cache current.
-
-Practical notes:
-
-- Do not assume `getServerChangedSignal(key)` replays values that arrived before the listener was attached.
-- If several fields must stay coherent on the same frame, prefer one server-authored envelope such as `runtimeSnapshot` instead of several loosely related keys.
-- Keep gameplay and UI hot paths reading from a validated local cache rather than directly from raw transport fields when malformed or partial startup state would otherwise cause nil math, UI errors, or one-frame mismatches.
-
-## Typing Note
-
-The current Luau or LSP setup may reject nominal annotations such as `Networker.Client` or `Networker.Server` in some files even though the package exports those types.
-
-When that happens, prefer a local concrete alias:
+If nominal package types are not resolved by Luau LSP, use local concrete aliases:
 
 ```luau
 local Networker = require(ReplicatedStorage.Packages.Networker)
@@ -122,32 +98,13 @@ type NetworkerClient = typeof(Networker.client.new("MyService", {} :: any))
 type NetworkerServer = typeof(Networker.server.new("MyService", {} :: any, {} :: { any }))
 ```
 
-This is preferable to leaving the annotation unresolved or falling back to `any` for the whole service.
+This keeps service fields typed without falling back to `any` for the whole service.
 
----
+## Testing
 
-## Testing (recommended in this template)
+Test deterministic service rules without remotes when possible.
 
-This repo already includes TestEZ and a runner. BuildService logic can be tested without networking:
+- Runner: [../src/Modules/Test/Runner.luau](../src/Modules/Test/Runner.luau)
+- Example spec: [../src/Modules/Test/Specs/BuildServiceS.spec.luau](../src/Modules/Test/Specs/BuildServiceS.spec.luau)
 
-- Runner: [`src/Modules/Test/Runner.luau`](../src/Modules/Test/Runner.luau)
-- Example spec: [`src/Modules/Test/Specs/BuildServiceS.spec.luau`](../src/Modules/Test/Specs/BuildServiceS.spec.luau)
-
-Testing server logic directly (without remotes) is good for deterministic tests and clean separation between transport and core logic.
-
----
-
-## Common pitfalls / practical advice
-
-- Never trust the client: validate `cf` (distance, permissions, character state, etc.).
-- Rate limit on the server (as shown in BuildService).
-- Clean up per-player caches on `PlayerRemoving`.
-- Consider separating “network handler” from core logic as the service grows.
-
----
-
-## Resources
-
-- Mounted package: `ReplicatedStorage.Packages.Networker` (via Rojo; see [`default.project.json`](../default.project.json))
-- Dependency list: [`wally.toml`](../wally.toml)
-- Upstream repository: https://github.com/leifstout/networker
+Networking behavior itself usually needs Studio or integration-level validation. Keep core validation logic small enough to test with TestEZ.

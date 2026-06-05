@@ -1,12 +1,10 @@
-# Source Architecture Guide
+# Source Architecture
 
-This guide documents how agents should work inside `src` for this Roblox template.
+Use this guide when adding or moving files under `src/`. Tool commands and diagnostics live in [genrojotree-setup.md](genrojotree-setup.md).
 
-## Scope
+## Top-Level Layout
 
-Only the `src` folder is covered here. Other project folders exist for tooling, packages, generated output, tasks, and documentation.
-
-The canonical top-level source layout is:
+Use these exact names and casing:
 
 ```text
 src/
@@ -18,49 +16,42 @@ src/
   UI/
 ```
 
-Use these exact top-level names and casing. Windows can hide case-only mistakes that later cause confusing Rojo or CI behavior.
+Windows can hide case-only mistakes, but Rojo output and CI can still behave differently. Keep casing stable.
 
-## Rojo Mapping
+## Rojo Mapping Rules
 
-`tools/genRojoTree.js` scans `src` and writes `default.project.json`.
+`tools/genRojoTree.js` scans `src/` and writes `default.project.json`.
 
-- Do not edit `default.project.json` manually for normal source changes.
-- `src/UI` is mapped as a whole to `ReplicatedStorage.UI`.
-- `src/Startup/Client.client.luau` maps to `StarterPlayer/StarterPlayerScripts`.
-- `src/Startup/Server.server.luau` maps to `ServerScriptService`.
-- Generic files under `src`, except `UI` and `Startup`, are mapped by filename and folder.
-- A filename containing `server` maps to `ServerScriptService`; other `.luau` files map to `ReplicatedStorage.Shared`.
-- `init.luau` claims its parent folder in the generated tree. Use it deliberately because child files under that folder are no longer mapped individually by the generator.
+- Do not edit `default.project.json` by hand for normal source changes.
+- `src/Startup/Client.client.luau` maps to `StarterPlayer/StarterPlayerScripts/Client`.
+- `src/Startup/Server.server.luau` maps to `ServerScriptService/Server`.
+- `src/UI` maps as one folder to `ReplicatedStorage.UI`.
+- Shared source maps under `ReplicatedStorage.Shared`.
+- `Server.luau` and filenames containing `server` map to `ServerScriptService`.
+- `Client.luau`, `Utils.luau`, and `Types.luau` map to replicated shared locations.
+- `init.luau` claims its parent folder in the generated tree; child modules under that folder are not mapped individually.
 
-Common service mapping examples:
+Service example:
 
 ```text
-src/Services/FooService/Client.luau
-  -> ReplicatedStorage.Shared.Services.FooService.FooServiceClient
-
-src/Services/FooService/Server.luau
-  -> ServerScriptService.Services.FooService.FooServiceServer
-
-src/Services/FooService/Utils.luau
-  -> ReplicatedStorage.Shared.Services.FooService.FooServiceUtils
+src/Services/FooService/Client.luau -> ReplicatedStorage.Shared.Services.FooService.FooServiceClient
+src/Services/FooService/Server.luau -> ServerScriptService.Services.FooService.FooServiceServer
+src/Services/FooService/Utils.luau  -> ReplicatedStorage.Shared.Services.FooService.FooServiceUtils
 ```
 
-Avoid putting the word `server` in a shared module filename unless it is intentionally server-only. For example, `ServerTime.luau` outside `src/UI` would be treated as server code by the current generator.
+Avoid putting `server` in a shared filename unless it is intentionally server-only.
 
-## Folder Responsibilities
-
-### `src/Startup`
+## `src/Startup`
 
 Entrypoints only.
 
 - `Client.client.luau` should require and initialize client-facing services and UI boot code.
 - `Server.server.luau` should require and initialize server services and test runners when appropriate.
-- Do not put gameplay logic, data tables, or UI components here.
-- Do not initialize placeholder services. Add startup wiring only when the service has real runtime behavior.
+- Do not put gameplay logic, data tables, UI components, or placeholder service startup here.
 
-### `src/Services`
+## `src/Services`
 
-Use this for feature services with lifecycle, networking, authority, player data, validation, cooldowns, or cross-module orchestration.
+Use services for feature ownership with lifecycle, networking, authority, player data, validation, cooldowns, or cross-module orchestration.
 
 Preferred layout:
 
@@ -69,78 +60,50 @@ src/Services/
   InventoryService/
     Client.luau
     Server.luau
-    Utils.luau       optional shared helper
-    Types.luau       optional exported types
+    Utils.luau
+    Types.luau
 ```
 
-Rules:
+Guidelines:
 
-- Name service folders `<Domain>Service`, for example `QuestService` or `LootService`.
-- Keep server authority in `Server.luau`.
-- Keep Roblox input, local UI calls, and client requests in `Client.luau`.
-- Put shared calculations that are safe to replicate in `Utils.luau`.
-- Add service-specific helper modules in the same folder when they are not broadly reusable.
-- If a service grows multiple coherent subareas, create subfolders inside that service rather than dumping everything into `Utils.luau`.
+- Name service folders `<Domain>Service`.
+- Keep server authority and trusted writes in `Server.luau`.
+- Keep local input, UI requests, and client calls in `Client.luau`.
+- Put shared calculations and contracts that are safe to replicate in `Utils.luau` or `Types.luau`.
+- Add service-local helper modules beside the service when they are not broadly reusable.
+- Split a service into subfolders when it grows coherent subareas; do not turn `Utils.luau` into a catch-all.
 
-Create a new service folder when the feature owns a separate runtime concern. Examples that commonly belong here across games:
+Common reusable services include inventory, levels, loot, quests, notifications, settings, monetization, tutorials, battle, duels, clans, trading, and build systems. Add only the services the current game actually needs.
 
-- `InventoryService`
-- `LevelService`
-- `LootService`
-- `QuestService`
-- `NotificationService`
-- `SettingsService`
-- `MonetizationService`
-- `TutorialService`
+## `src/Modules`
 
-More game-specific services such as battle, duel, clan, clash, trading, or bot-building should be added only when that game actually needs them.
+Use modules for shared code without a service lifecycle.
 
-### `src/Modules`
-
-Use this for shared modules without their own service lifecycle.
-
-Recommended subfolders:
+Recommended areas:
 
 ```text
 src/Modules/
-  Core/       project-wide config, data templates, codecs, base utilities
-  Game/       domain config, rules, requirements, item definitions
-  Math/       deterministic math helpers
-  Platform/   Roblox platform wrappers and retry helpers
-  Test/       TestEZ runner and specs
-  UI/         UI-specific pure helpers when they are not React components
+  Core/      project-wide config, data templates, codecs, base utilities
+  Game/      domain config, rules, requirements, item definitions
+  Math/      deterministic math helpers
+  Platform/  Roblox platform wrappers and retry helpers
+  Test/      TestEZ runner and specs
+  UI/        UI-specific pure helpers that are not React components
 ```
 
-Create domain subfolders under `Modules/Game` when data becomes more than a single file:
+Keep modules pure where practical. If a module starts owning remotes, player connections, startup behavior, server writes, or long-lived state, move that responsibility into a service or class.
 
-```text
-src/Modules/Game/Quests/
-  init.luau
-  DailyQuestDefinitions.luau
-  QuestRewards.luau
-```
+## `src/Classes`
 
-Keep modules pure where possible. If a module starts managing remotes, player connections, startup behavior, or server writes, move that concern into `src/Services`.
+Use classes for constructor-based modules with instance state, methods, lifetime, and cleanup.
 
-### `src/Classes`
+- A single self-contained class can stay as `src/Classes/Foo.luau`.
+- A family of classes or collaborators should get a folder, for example `src/Classes/Battle/` or `src/Classes/PhysicsEngine/`.
+- Prefer plain modules for stateless calculations and data transforms.
 
-Use this for class-style Luau modules with constructors, instance state, methods, and cleanup.
+## `src/UI`
 
-Examples:
-
-```text
-src/Classes/
-  Battle/
-  Bot/
-  PhysicsEngine/
-  CacheStore.luau
-```
-
-Create a folder when a class family has multiple collaborators or subclasses. A single self-contained class can stay as `src/Classes/Foo.luau`.
-
-### `src/UI`
-
-`src/UI` is replicated as a whole. Do not put server-only secrets or privileged data here.
+`src/UI` is fully replicated to `ReplicatedStorage.UI`. Do not put server-only secrets, privileged data, or server authority here.
 
 Preferred new UI layout:
 
@@ -151,98 +114,51 @@ src/UI/
     components/
     hooks/
     primitives/
-  features/     feature-specific UI packages
-    quest/
-      components/
-      screens/
-      state/
+  features/     feature-owned screens, components, hooks, and state
   hud/          always-visible gameplay HUD regions
-    BottomBar/
-    LeftSideBar/
-    TopBar/
-    state/
-  shared/       reusable domain-aware UI widgets
-  Stories/      story/demo entrypoints when used by tooling
+  shared/       reusable domain-aware widgets
 ```
 
-The template may also contain broad folders such as `Components`, `Hooks`, `Screens`, and `Store`. Treat those as legacy, compatibility, or staging areas. For new reusable work, prefer `core`, `features`, `hud`, and `shared`.
+Placement rules:
 
-UI placement rules:
-
-- Put primitive wrappers such as buttons, labels, boxes, and scalable frames in `UI/core/primitives`.
-- Put reusable framework-level components in `UI/core/components`.
-- Put reusable UI hooks in `UI/core/hooks`.
-- Put domain-aware reusable widgets in `UI/shared`.
+- Put primitive wrappers in `UI/core/primitives`.
+- Put reusable framework components in `UI/core/components`.
+- Put reusable hooks in `UI/core/hooks`.
+- Put domain-aware widgets reused by multiple features in `UI/shared`.
+- Put feature screens, feature-only components, hooks, and state in `UI/features/<feature>`.
 - Put always-visible HUD regions in `UI/hud/<RegionName>`.
-- Put feature screens, feature state, feature hooks, and feature-only components in `UI/features/<feature>`.
-- If a feature UI grows state plus screens plus components, create the feature folder immediately instead of placing files in separate global folders.
+- Create a feature folder as soon as a UI feature has state plus screens or components.
 
-HUD examples:
+Legacy or staging folders such as `Components`, `Hooks`, `Screens`, `Store`, `ComponentsOld`, or `ScreensOld` are reference areas. Do not add new work there unless a task explicitly asks for migration or compatibility work.
 
-```text
-src/UI/hud/
-  BottomBar/
-    init.luau
-    XpBar.luau
-  LeftSideBar/
-    init.luau
-    CurrencyDisplay.luau
-  TopBar/
-  state/
-    hudSlice.luau
-```
+## When To Create A Folder
 
-Feature UI examples:
+Create a dedicated folder when it improves ownership or reuse:
 
-```text
-src/UI/features/
-  loot/
-    components/
-    screens/
-    state/
-  quest/
-    components/
-    state/
-  shop/
-    components/
-    screens/
-    state/
-```
-
-## When To Create A Dedicated Folder
-
-Create a dedicated folder when it improves ownership or reuse. Good triggers:
-
-- More than one file belongs to the same feature.
-- A module has both data and behavior.
-- A UI feature has state plus components or screens.
-- A service needs client/server/shared parts.
-- The code is likely to be copied into another Roblox game.
-- The name represents a product concept such as inventory, quests, loot, levels, shop, profile, tutorial, or settings.
+- The feature has both client and server behavior.
+- The feature owns networking, player lifecycle, persistent state, validation, cooldowns, or authority.
+- A UI feature has state plus components, screens, or hooks.
+- A class family has multiple collaborators or variants.
+- The code is likely to be reused across games.
 
 Keep a single file when the module is tiny, pure, and unlikely to grow.
 
-## Service Implementation Checklist
+## Implementation Checklists
 
-When adding a real service:
+When adding a service:
 
 1. Create `src/Services/<Name>Service`.
-2. Add `Server.luau` if the server owns behavior or data.
-3. Add `Client.luau` if clients need local input, UI requests, or replicated calls.
-4. Add `Utils.luau` or smaller helper modules only for shared, non-privileged logic.
-5. Wire the server service in `src/Startup/Server.server.luau` only when it must run on boot.
-6. Wire the client service in `src/Startup/Client.client.luau` only when it must run on boot.
-7. Add focused TestEZ specs under `src/Modules/Test/Specs` when the behavior is testable outside Studio.
-
-## UI Implementation Checklist
+2. Add `Server.luau` for server-owned behavior or data.
+3. Add `Client.luau` for local input, UI requests, or replicated calls.
+4. Add `Utils.luau`, `Types.luau`, or smaller helper modules only when needed.
+5. Wire startup only when the service has real boot-time behavior.
+6. Add focused TestEZ specs for deterministic logic.
 
 When adding a UI feature:
 
-1. Decide whether it is global HUD, feature UI, shared widget, or core UI infrastructure.
+1. Decide whether it is app infrastructure, global HUD, feature UI, or shared widget.
 2. Create `src/UI/features/<feature>` for feature-owned UI.
-3. Add `components`, `screens`, `state`, `hooks`, or `hud` subfolders only when the feature actually needs them.
-4. Put reusable primitives in `src/UI/core`, not inside a feature.
-5. Put domain-aware widgets reused by multiple features in `src/UI/shared`.
-6. Keep UI state close to the feature unless it is truly global HUD/app state.
-7. Add story/demo files under `src/UI/Stories` only when the repo's UI tooling uses them.
-
+3. Add `components`, `screens`, `state`, or `hooks` only when the feature needs them.
+4. Put reusable primitives and hooks under `src/UI/core`.
+5. Put domain widgets reused by multiple features under `src/UI/shared`.
+6. Keep feature state close to the feature unless it is truly global app or HUD state.

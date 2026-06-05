@@ -6,84 +6,72 @@
 - Created: <yyyy-mm-dd>
 - Owner: <name or team>
 - Related issue: <optional>
-- Related files: <optional list such as src/Services/... or tools/genRojoTree.js>
+- Related files: <optional paths>
 
 ## Objective
 
-<!-- WHAT HAS TO BE ACHIEVED AND WHY IT MATTERS. -->
+<!-- What must be achieved and why it matters. -->
 
 ## Context
 
-<!-- DOMAIN, TECHNICAL, OR GAMEPLAY CONTEXT NEEDED TO UNDERSTAND THE TASK. -->
+<!-- Domain, technical, or gameplay context needed to understand the task. -->
 
 ## Constraints
 
-<!-- NON-NEGOTIABLE RULES, REPLICATION BOUNDARIES, GENERATED-FILE RULES, DEADLINES, OR SCOPE LIMITS. -->
+<!-- Non-negotiable rules, replication boundaries, generated-file rules, deadlines, or scope limits. -->
 
 ## Open Questions
 
-<!-- MISSING INFORMATION THAT CAN CHANGE THE IMPLEMENTATION OR THE ACCEPTANCE CRITERIA. -->
-
-## Planner Section
-
-<!-- PLANNER-OWNED SECTIONS START HERE. -->
+<!-- Missing information that can change implementation or acceptance criteria. -->
 
 ## Planning Notes
 
-<!-- DISCOVERY NOTES, AFFECTED AREAS, RISKS, AND EARLY DECISIONS. INCLUDE ROJO, STARTUP, NETWORKING, OR TEST RISKS WHEN RELEVANT. -->
+<!-- Discovery notes, affected areas, risks, assumptions, and early decisions. -->
 
 ## Approved Plan
 
-<!-- CONCRETE IMPLEMENTATION STEPS ONCE THE TASK IS READY TO EXECUTE. -->
+<!-- Concrete implementation steps once the task is ready. -->
 
 ## Parallelization
 
-<!-- OPTIONAL: LIST SAFE SUBTASKS THAT CAN BE IMPLEMENTED IN PARALLEL. -->
+<!-- Optional: safe subtasks that can be implemented in parallel. -->
 
 ## Implementation Handoff
 
-<!-- THE MINIMUM CONTEXT AN IMPLEMENTATION AGENT SHOULD READ BEFORE CHANGING CODE. -->
-
-## Coder Section
-
-<!-- CODER-OWNED SECTIONS START HERE. -->
+<!-- Minimum context an implementation agent should read before changing code. -->
 
 ## Implementation Notes
 
-<!-- DECISIONS TAKEN DURING EXECUTION, IMPORTANT TRADEOFFS, OR FOLLOW-UPS. -->
+<!-- Decisions, tradeoffs, and relevant execution notes. -->
 
 ## Verification
 
-<!-- TESTS, MANUAL CHECKS, ROJO TREE REGENERATION, OR STUDIO-SIDE EVIDENCE NEEDED TO CONSIDER THE TASK DONE. -->
+<!-- Tests, manual checks, Rojo regeneration, diagnostics, or Studio evidence needed for closeout. -->
 
 ## Manual Studio Setup
 
-<!-- CODER-OWNED. LIST ANY TAGS, ATTRIBUTES, INSTANCES, ASSET PLACEMENT, OR OTHER ROBLOX STUDIO STEPS THAT MUST BE APPLIED MANUALLY. USE CONCRETE NAMES AND A SHORT CHECKLIST. WRITE `NONE` IF NOTHING MANUAL IS REQUIRED. -->
+<!-- Concrete tags, attributes, instances, assets, or other Studio-only steps. Write `none` if not needed. -->
 
 ## Review Findings
 
-<!-- REVIEWER-OWNED. RECORD CONCRETE BUGS, RISKS, MISSING VALIDATION, OR EXPLICITLY NOTE `NONE`. -->
+<!-- Concrete bugs, risks, missing validation, or `none`. -->
 
 ## Discovered Follow-Ups
 
-<!-- SHORT POINTERS TO DEFERRED WORK. CANONICAL OPEN ITEMS MUST LIVE IN tasks/backlog.md. -->
-
-## Governance Section
-
-<!-- GOVERNANCE-OWNED SECTIONS START HERE. -->
+<!-- Short pointers only. Canonical open items belong in tasks/backlog.md. -->
 
 ## AI Context Updates
 
-<!-- RECORD WHETHER THIS TASK SHOULD UPDATE `.github/`, PROMPTS, AGENTS, SKILLS, `Readmes/`, OR NOTHING. -->
+<!-- Whether this task should update `.github/`, prompts, agents, skills, docs, templates, or nothing. -->
 
 ## Workflow or Docs Impact
 
-<!-- NOTE WHETHER THIS TASK CHANGED TEAM WORKFLOW, TASK STRUCTURE, READMES, OR DOCUMENTATION EXPECTATIONS. -->
+<!-- Durable workflow or documentation changes caused by this task. -->
 
 ## Closeout Decision
 
-<!-- RECORD WHETHER THE TASK STAYS ACTIVE, MOVES TO ARCHIVE, OR SPAWNS A FOLLOW-UP TASK. -->
+<!-- Whether the task stays active, moves to archive, or spawns follow-up work. -->
 
 ## Completion Summary
 
-<!-- SHORT FINAL SUMMARY OF WHAT WAS DONE, WHAT WAS DEFERRED, AND WHAT REMAINS OPEN. -->
+<!-- What was done, what was deferred, and what remains open. -->

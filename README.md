@@ -1,59 +1,55 @@
 # Roblox Rojo Template
 
-This repository is a reusable Roblox game template built around Rojo, Rokit, Wally, TestEZ, task files, and GitHub Copilot customizations.
+Reusable Roblox game template built around Rojo, Rokit, Wally, TestEZ, generated diagnostics, task files, and GitHub Copilot project assets.
 
 ## Quick Start
 
-Create a new repository from this template, then run:
+For a new game created from this template, run:
 
 ```bash
 npm run init:project -- --name "My Game" --repo "your-org/my-game"
 ```
 
-That command updates the project name, repository metadata, Wally package name, installs dependencies and tools, and regenerates the Rojo project file.
+The initializer updates project identity, repository metadata, the Wally package name, dependencies, tools, and the generated Rojo tree.
 
-After that:
+For local validation of the template itself:
 
-1. Open the repository in VS Code.
-2. Run the `Watch Rojo Tree` task.
-3. Start `rojo serve` when you want to sync with Studio.
-4. Use `npm test` for headless TestEZ runs.
+```bash
+npm install
+rokit install
+wally install
+npm run build:rojo
+npm test
+```
 
-## Luau Diagnostics
+Start `rojo serve` when you are ready to sync the generated project with Roblox Studio.
 
-Run `npm run check:luau` or the `Check Luau Diagnostics` VS Code task to regenerate `default.project.json`, refresh `sourcemap.json`, and run `luau-lsp analyze` across `src/` and `scripts/` with Roblox engine definitions from the Luau LSP cache plus the TestEZ definitions loaded.
+## Common Commands
 
-For a saved-file export instead of terminal-only analyzer output, run `npm run export:luau:diagnostics` for git-changed or untracked `src/**` files, or `npm run export:luau:diagnostics:all` for all `src/**` files. Matching VS Code tasks are `Export Luau Diagnostics Report (Changed src)` and `Export Luau Diagnostics Report (All src)`. The exporter refreshes the Rojo tree and `sourcemap.json`, then writes a grouped Markdown report plus a JSON artifact under `tasks/local/diagnostics/`.
+- `npm run build:rojo`: regenerate `default.project.json` from `src/`.
+- `npm run watch:rojo`: watch `src/` and regenerate the Rojo tree.
+- `npm run check:luau`: regenerate Rojo output, refresh `sourcemap.json`, and run Luau analysis.
+- `npm run export:luau:diagnostics`: write changed-file diagnostics under `tasks/local/diagnostics/`.
+- `npm run export:luau:diagnostics:all`: write diagnostics for all saved `src/**` files.
+- `npm test`: build a disposable test place and run TestEZ through `run-in-roblox`.
 
-This export reflects saved-file static diagnostics from `luau-lsp analyze`. It does not scrape the live Problems panel, and it does not include unsaved editor-buffer state.
+## Documentation
 
-If the Luau CLI reports that Roblox engine definitions are missing, open VS Code and run `Luau: Download API Types`, then rerun the command. If `luau-lsp` is missing after pulling toolchain changes, run `rokit install`.
+Use [Readmes/README.md](Readmes/README.md) as the documentation map.
 
-## Core Docs
+Most work starts with:
 
-- [AGENTS.md](AGENTS.md)
-- [Readmes/src-architecture.md](Readmes/src-architecture.md)
-- [Readmes/new-project-checklist.md](Readmes/new-project-checklist.md)
-- [Readmes/genrojotree-setup.md](Readmes/genrojotree-setup.md)
-- [Readmes/game-planning-order.md](Readmes/game-planning-order.md)
-- [Readmes/networker.md](Readmes/networker.md)
-- [Readmes/testez.md](Readmes/testez.md)
-- [tasks/README.md](tasks/README.md)
+- [Readmes/src-architecture.md](Readmes/src-architecture.md): source layout and ownership rules.
+- [Readmes/genrojotree-setup.md](Readmes/genrojotree-setup.md): Rojo generation, sourcemap, diagnostics, and troubleshooting.
+- [Readmes/new-project-checklist.md](Readmes/new-project-checklist.md): steps for creating a new project from this template.
+- [tasks/README.md](tasks/README.md): task records, backlog, archive, and task assets.
 
-## Template Defaults
+Agent-specific rules live in [AGENTS.md](AGENTS.md). GitHub Copilot prompts, agents, and instructions live under `.github/`.
 
-- Rojo tree generation is driven by `tools/genRojoTree.js`.
-- `default.project.json` is generated output and should not be edited manually.
-- `src/Startup/Client.client.luau` and `src/Startup/Server.server.luau` are the runtime entrypoints.
-- `src/Services/<ServiceName>/Client.luau`, `Server.luau`, and `Utils.luau` are the preferred service layout.
+## Source Of Truth
 
-## GitHub Copilot Workflow
-
-The repository includes reusable Copilot assets under `.github/`:
-
-- repo-wide instructions
-- path-specific instructions
-- prompts for task creation, review, debug, and closeout
-- custom agents for planning, coding, debugging, review, and `.github` governance
-
-When you create a new game from this template, keep those assets unless your workflow changes substantially.
+- Runtime source lives under `src/`.
+- `tools/genRojoTree.js` owns Roblox service placement.
+- `default.project.json` is generated output; regenerate it instead of editing it by hand.
+- Wally packages are generated under `Packages/` and `ServerPackages/`.
+- `sourcemap.json`, `out/`, and `tasks/local/` are disposable local output.

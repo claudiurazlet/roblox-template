@@ -1,40 +1,34 @@
-# Game Planning Order
+# New Game Planning Order
 
-Use this document as a default phase order when starting a new Roblox game from this template. Update the order when playtests or production constraints invalidate the assumptions.
+Use this order when starting a new Roblox game from the template. Update it when playtests or production constraints prove a different order is better.
 
 ## Core Rule
 
-Build the smallest multiplayer-ready version of the core fantasy before building final art, large environments, or full meta UI.
+Build the smallest multiplayer-ready version of the core fantasy before final art, large environments, full meta UI, or large economies.
 
 ## Default Order
 
 1. Core fantasy and success metric
-   - Write the one-sentence player loop.
-   - Decide what counts as a good first five minutes.
-   - Lock the initial server size target and primary devices.
 2. Playable vertical slice
-   - Implement one repeatable action loop with spawn, input, win or fail state, and reward.
-   - Use greybox assets only.
-   - Add temporary debug UI only if needed.
 3. Greybox world and camera
-   - Build only the environment needed to prove the loop.
-   - Validate sightlines, collision, reset volumes, and spawn safety.
 4. Multiplayer rules
-   - Define what is shared, what is instanced, and what must stay server-authoritative.
-   - Validate joins, leaves, contention, and anti-exploit boundaries.
 5. Minimal HUD
-   - Add only the HUD needed to understand the loop: currency, progress, timer, objective, or state.
-   - Delay menus, shops, inventory, and settings until the loop is fun.
 6. Progression and economy
-   - Add permanent upgrades, costs, and pacing once collection rates are measurable.
-   - Avoid finalizing inventory structure before upgrade categories are stable.
 7. Content expansion
-   - Add power-ups, hazards, map variation, mission structure, and content variety.
-   - Scale density carefully; do not solve boredom with raw part count.
 8. Meta UI and social systems
-   - Add menus, inventory, shop, onboarding, leaderboards, parties, and other session-to-session systems.
 9. Polish, performance, and device expansion
-   - Optimize replication, cleanup, pooling, mobile readability, console prompts, audio, VFX, and final art.
+
+## What Each Phase Must Prove
+
+- Core fantasy: one-sentence player loop, first-five-minutes goal, initial server size, primary devices.
+- Vertical slice: one repeatable action loop with spawn, input, win or fail state, and reward.
+- Greybox world: collision, reset volumes, sightlines, spawn safety, and camera readability.
+- Multiplayer rules: what is shared, what is instanced, and what must stay server-authoritative.
+- Minimal HUD: only the information needed to understand the loop.
+- Progression and economy: costs, rewards, pacing, and upgrade categories based on measured collection rates.
+- Content expansion: hazards, power-ups, map variation, mission structure, and replay variety.
+- Meta UI and social systems: menus, inventory, shop, onboarding, leaderboards, parties, and session-to-session systems.
+- Polish: replication cost, cleanup, pooling, mobile readability, console prompts, audio, VFX, and final art.
 
 ## UI Order
 
@@ -57,18 +51,16 @@ Build the smallest multiplayer-ready version of the core fantasy before building
 ## Multiplayer Sizing
 
 - Start small enough that the core loop stays readable and server cost is easy to reason about.
-- Increase player count only after real tests confirm readability, collision behavior, replication cost, and reward contention.
-- For physics-heavy or high-motion games, start with a lower server target than social hangouts or low-interaction games.
-- Do not target very large servers first unless the design uses separated spaces, low interaction density, and aggressive optimization.
+- Increase player count only after tests confirm readability, collision behavior, replication cost, and reward contention.
+- Start physics-heavy or high-motion games with a lower server target than low-interaction social spaces.
+- Avoid very large servers first unless the design uses separated spaces, low interaction density, and aggressive optimization.
 
-## First Milestone Template
+## First Milestone
 
-- Prove the core action loop.
-- Prove the reward loop.
-- Prove reset and failure handling.
-- Prove multiplayer readability with a small server.
-- Prove the minimum HUD.
+The first playable milestone should prove:
 
-## Update Policy
-
-Change the order when testing invalidates assumptions. Keep the first playable milestone small.
+- core action loop
+- reward loop
+- reset and failure handling
+- multiplayer readability with a small server
+- minimum HUD

@@ -17,6 +17,10 @@ Use this folder for committed task-specific screenshots and other lightweight vi
 ## Markdown Usage
 
 - From a task file in either `tasks/active/` or `tasks/archive/`, reference images with `../assets/<task-slug>/<image-name>`.
-- Example: `![Trailing side camera feels too slow](../assets/20260405-camera-tuning/trailing-side-too-slow.png)`
+- Example snippet:
+
+```markdown
+![Trailing side camera feels too slow](../assets/20260405-camera-tuning/trailing-side-too-slow.png)
+```
 
 Move or copy an image to `Readmes/references/` only when it becomes a reusable cross-task visual reference.

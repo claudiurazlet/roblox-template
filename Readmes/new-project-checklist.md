@@ -1,66 +1,58 @@
-# New Project Checklist
+# New Project Bootstrap Checklist
 
-Use this checklist every time you create a new Roblox game repository from this template.
+Use this checklist when creating a new Roblox game repository from this template.
 
-## Preferred Flow
+## Initialize
 
-If you create the repository from the GitHub template button, clone it locally and run:
+After creating or cloning the new repository, run:
 
 ```bash
 npm run init:project -- --name "My Game" --repo "your-org/my-game"
 ```
 
-This command updates the main project identity and then runs:
-
-- `rokit install`
-- `npm install`
-- `wally install`
-- `npm run build:rojo`
-
-If your Wally scope should not match the GitHub owner, add `--wally-scope`.
+Use `--wally-scope` only when the Wally package scope should differ from the GitHub owner:
 
 ```bash
 npm run init:project -- --name "My Game" --repo "studio/my-game" --wally-scope "sharedstudio"
 ```
 
-## What The Script Updates
+The initializer updates project identity and runs `rokit install`, `npm install`, `wally install`, and `npm run build:rojo` unless `--skip-install` is provided.
 
-- `package.json` package name and repository metadata
-- `wally.toml` package name
-- `tools/genRojoTree.js` DataModel name
-- `README.md` quick-start command, when present
+## What It Updates
 
-## Manual Checklist After Initialization
+- `package.json` name, description, repository, bugs, and homepage metadata.
+- `wally.toml` package name.
+- `tools/genRojoTree.js` DataModel name.
+- `README.md` quick-start example when present.
 
-1. Confirm the new project name in `tools/genRojoTree.js` and regenerate Rojo if needed.
-2. Confirm `wally.toml` uses the package scope you actually want.
-3. Replace the root README with game-specific documentation once the project direction is stable.
-4. Open VS Code and run the `Watch Rojo Tree` task.
-5. Start `rojo serve` before connecting from Studio.
-6. Run `npm test` at least once to confirm the headless test runner works on the machine.
-7. If you copied the repository manually instead of using the GitHub template flow, remove or replace the old Git remote.
+## After Initialization
 
-## First GitHub Repo Setup
+1. Confirm the project name in `tools/genRojoTree.js`.
+2. Confirm `wally.toml` uses the intended package scope.
+3. Run `npm test` once on the machine.
+4. Open VS Code and run the `Watch Rojo Tree` task while editing source structure.
+5. Start `rojo serve` before connecting Roblox Studio.
+6. Replace the root README with game-specific documentation once the game direction is stable.
+7. If the repository was copied manually, replace the old Git remote.
 
-Recommended minimum setup for a new game repository:
+## GitHub Setup
 
-1. Enable branch protection for the default branch.
-2. Keep the CI workflow enabled so Rojo generation stays validated.
-3. Keep `.github/` prompts, agents, skills, and instructions unless the team decides to simplify them.
-4. Use the pull request template for gameplay, networking, startup, or Rojo tree changes.
+Recommended minimum setup:
 
-## Copilot And Task Workflow
+1. Keep the validation workflow enabled.
+2. Enable branch protection for the default branch.
+3. Keep the pull request template for gameplay, networking, startup, Rojo tree, or performance changes.
+4. Keep `.github/` prompts, agents, skills, and instructions unless the team intentionally simplifies the workflow.
 
-Recommended early workflow:
+## First Project Task
 
-1. Create the first tracked task from `tasks/templates/task.template.md`.
-2. Use the `new-task` prompt to capture scope before implementation.
-3. Use the `review-task` prompt before merging risky changes.
-4. Use the `.github` governance pass when a task teaches a durable workflow rule.
+Create the first tracked task from [../tasks/templates/task.template.md](../tasks/templates/task.template.md), then use [../tasks/README.md](../tasks/README.md) for the task lifecycle.
+
+Record any Roblox Studio-only setup in the task file with stable names for instances, tags, attributes, folders, and manual configuration.
 
 ## Troubleshooting
 
-- If `default.project.json` is stale, run `npm run build:rojo`.
-- If package folders are missing, run `wally install`.
-- If Roblox CLI tools are missing, run `rokit install`.
-- If Luau navigation becomes inconsistent, delete `sourcemap.json` and restart VS Code.
+- Stale Rojo tree: run `npm run build:rojo`.
+- Missing packages: run `wally install`.
+- Missing Roblox CLI tools: run `rokit install`.
+- Confusing Luau navigation: regenerate `sourcemap.json` or restart VS Code.

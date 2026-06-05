@@ -1,163 +1,56 @@
-# Sift guide (immutable data helpers)
+# Sift
 
-## What is Sift?
+Sift is a Luau table helper library for immutable-style updates. This template pins `Sift = "csqrl/sift@0.0.11"` in [../wally.toml](../wally.toml).
 
-**Sift** is a Luau/Roblox library for working with immutable data, inspired by ideas from Immutable.js and Redux. It helps you update complex tables by creating new values instead of mutating the originals.
+Use Sift when new table references make the code clearer, especially for React state, reducer-like state updates, undo/redo history, or predictable transformations. Prefer plain table mutation when the code is local, performance-sensitive, and does not benefit from immutable references.
 
-### Project status
+## Import
 
-- Sift is not actively maintained anymore
-- It is still stable to use for many projects
-- This repo pins version `0.0.11`
-
-## Installation
-
-### 1) Install via Wally
-
-```bash
-wally install
-```
-
-The dependency is already present in [`wally.toml`](../wally.toml):
-
-```toml
-sift = "csqrl/sift@0.0.11"
-```
-
-### 2) Verify it works
-
-This repo contains examples under [`src/Examples/Sift/SiftExamples.luau`](../src/Examples/Sift/SiftExamples.luau). You can run them from the server entry point if you want to validate behavior.
-
-## Practical examples
-
-### Import Sift
-
-```lua
+```luau
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Sift = require(ReplicatedStorage.Packages.Sift)
 ```
 
-### Dictionary (tables)
+## Common Operations
 
-```lua
-local player = {
-    name = "Mario",
-    level = 5,
-    coins = 100,
-}
+Dictionary:
 
--- Immutable: creates a new table
-local playerWithCoins = Sift.Dictionary.merge(player, {
-    coins = 150,
-})
+- `Sift.Dictionary.merge(dict, updates)`
+- `Sift.Dictionary.mergeDeep(dict, updates)`
+- `Sift.Dictionary.set(dict, key, value)`
+- `Sift.Dictionary.removeKey(dict, key)`
+- `Sift.None` to remove keys during merge operations.
 
-print(player.coins) -- 100 (original unchanged)
-print(playerWithCoins.coins) -- 150 (new table)
-```
+Array:
 
-### Array (lists)
+- `Sift.Array.push(array, item)`
+- `Sift.Array.removeValue(array, item)`
+- `Sift.Array.removeIndex(array, index)`
+- `Sift.Array.map(array, callback)`
+- `Sift.Array.filter(array, callback)`
+- `Sift.Array.concat(left, right)`
 
-```lua
-local inventory = { "Sword", "Shield", "Potion" }
+Set:
 
--- Immutable: creates a new array
-local newInventory = Sift.Array.push(inventory, "Magic Ring")
+- `Sift.Set.fromArray(array)`
+- `Sift.Set.toArray(set)`
+- `Sift.Set.add(set, item)`
+- `Sift.Set.has(set, item)`
+- `Sift.Set.union(left, right)`
+- `Sift.Set.intersection(left, right)`
 
-print(#inventory) -- 3 (original unchanged)
-print(#newInventory) -- 4 (new array)
-```
+## Local Examples
 
-## React integration (example)
+The template includes examples at [../src/Examples/Sift/SiftExamples.luau](../src/Examples/Sift/SiftExamples.luau). Use that file for quick behavior checks and sample operations instead of copying long examples into this guide.
 
-```lua
-local useState = React.useState
+The package source under `Packages/_Index/csqrl_sift@0.0.11/sift/src/` is also useful when confirming exact operation names.
 
-local function PlayerComponent()
-    local playerState, setPlayerState = useState({
-        name = "Player",
-        health = 100,
-        coins = 0,
-    })
+## Practical Rules
 
-    local function addCoins(amount)
-        setPlayerState(function(currentState)
-            return Sift.Dictionary.merge(currentState, {
-                coins = currentState.coins + amount,
-            })
-        end)
-    end
-
-    return React.createElement("TextLabel", {
-        Text = string.format("Coins: %d", playerState.coins),
-    })
-end
-```
-
-## Main operations (cheat sheet)
-
-### Dictionary
-
-- `merge(dict, updates)`
-- `mergeDeep(dict, updates)`
-- `set(dict, key, value)`
-- `removeKey(dict, key)`
-- `Sift.None` (marker to remove keys via merge)
-
-### Array
-
-- `push(array, item)`
-- `remove(array, item)`
-- `removeIndex(array, index)`
-- `map(array, func)`
-- `filter(array, func)`
-- `concat(array1, array2)`
-
-### Set
-
-- `fromArray(array)`
-- `toArray(set)`
-- `add(set, item)`
-- `has(set, item)`
-- `union(set1, set2)`
-
-## Why use Sift?
-
-Pros:
-
-1. Easier debugging (previous state still exists)
-2. Undo/redo patterns become simpler
-3. React-friendly (change detection via new references)
-4. More predictable code (fewer hidden side effects)
-
-Considerations:
-
-1. Performance: creates new tables (memory overhead)
-2. Learning curve: different mindset vs direct mutation
-
-## Best practices
-
-### With React state
-
-```lua
-setPlayerState(function(currentState)
-    return Sift.Dictionary.merge(currentState, updates)
-end)
-
--- Avoid direct mutation:
--- currentState.health = newHealth
-```
-
-### Nested objects
-
-```lua
-local newState = Sift.Dictionary.mergeDeep(gameState, {
-    player = {
-        stats = {
-            strength = 15,
-        },
-    },
-})
-```
+- Do not mutate React state tables directly; return a new table from the setter.
+- Use `mergeDeep` only when nested updates are clearer than rebuilding the nested structure explicitly.
+- Keep hot-path code simple and measure before replacing direct mutation with many table copies.
+- Avoid mixing immutable and mutating updates in the same state owner.
 
 ## Links
 
