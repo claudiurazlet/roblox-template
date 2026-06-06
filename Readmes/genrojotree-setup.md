@@ -43,10 +43,9 @@ The initializer runs the setup steps by default.
 - `npm run watch:rojo`: watch `src/**` and regenerate the tree after changes.
 - `npm run build:luau:sourcemap`: regenerate `sourcemap.json`.
 - `npm run check:luau`: regenerate Rojo output, refresh sourcemap, and analyze `src/` plus `scripts/`.
-- `npm run export:luau:diagnostics`: export diagnostics for git-changed or untracked `src/**` files.
 - `npm run export:luau:diagnostics:all`: export diagnostics for every saved `src/**` file.
 
-Matching VS Code tasks exist for Rojo watch, Luau diagnostics, and diagnostics export.
+Matching VS Code tasks exist for Rojo watch, Luau diagnostics, and all-source diagnostics export.
 
 ## Mapping Summary
 

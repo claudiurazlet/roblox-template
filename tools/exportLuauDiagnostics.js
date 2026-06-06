@@ -10,7 +10,7 @@ const GNU_DIAGNOSTIC_PATTERN = /^(?<file>.+?)(?: \[(?<modulePath>[^\]]+)\])?:(?<
 
 function parseArgs(argv) {
   const args = {
-    scope: "changed",
+    scope: "all",
     help: false,
   };
 
@@ -29,8 +29,8 @@ function parseArgs(argv) {
         throw new Error("Missing value for --scope.");
       }
 
-      if (!["changed", "all"].includes(value)) {
-        throw new Error(`Unsupported scope: ${value}`);
+      if (value !== "all") {
+        throw new Error(`Unsupported scope: ${value}. Only 'all' is supported.`);
       }
 
       args.scope = value;
@@ -45,7 +45,7 @@ function parseArgs(argv) {
 }
 
 function printHelp() {
-  console.log(`Export saved-file Luau diagnostics for src/**.\n\nUsage:\n  node tools/exportLuauDiagnostics.js [--scope changed|all]\n\nOptions:\n  --scope <changed|all>  Select git-changed src files or all src files. Defaults to changed.\n  --help                 Show this message.`);
+  console.log(`Export saved-file Luau diagnostics for src/**.\n\nUsage:\n  node tools/exportLuauDiagnostics.js [--scope all]\n\nOptions:\n  --scope all  Export diagnostics for every saved src file. Defaults to all.\n  --help       Show this message.`);
 }
 
 function normalizeSlashes(value) {
@@ -113,47 +113,6 @@ function makeCandidateFile(relativePath) {
     relativePath: normalizeSlashes(relativePath),
     analyzable: isAnalyzableLuauFile(relativePath),
   };
-}
-
-function collectChangedSrcFiles() {
-  const result = runCommand("git", ["status", "--porcelain", "--untracked-files=all", "--", "src"]);
-  const filesByPath = new Map();
-
-  for (const rawLine of result.combinedOutput.split(/\r?\n/)) {
-    if (!rawLine.trim() || rawLine.startsWith("!!")) {
-      continue;
-    }
-
-    let relativePath = rawLine.slice(3).trim();
-
-    if (relativePath.includes(" -> ")) {
-      const parts = relativePath.split(" -> ");
-      relativePath = parts[parts.length - 1].trim();
-    }
-
-    if (
-      (relativePath.startsWith('"') && relativePath.endsWith('"')) ||
-      (relativePath.startsWith("'") && relativePath.endsWith("'"))
-    ) {
-      relativePath = relativePath.slice(1, -1);
-    }
-
-    const absolutePath = path.resolve(ROOT, relativePath);
-
-    if (!fs.existsSync(absolutePath) || !fs.statSync(absolutePath).isFile()) {
-      continue;
-    }
-
-    const normalizedRelativePath = toRelative(absolutePath);
-
-    if (!isUnderSrc(normalizedRelativePath)) {
-      continue;
-    }
-
-    filesByPath.set(normalizeAbsolute(absolutePath), makeCandidateFile(normalizedRelativePath));
-  }
-
-  return Array.from(filesByPath.values()).sort(comparePaths);
 }
 
 function walkFiles(rootDir) {
@@ -388,10 +347,10 @@ function buildMarkdownReport(reportData) {
   return `${lines.join("\n")}\n`;
 }
 
-function writeArtifacts(scope, reportData) {
+function writeArtifacts(reportData) {
   fs.mkdirSync(REPORT_DIR, { recursive: true });
 
-  const stem = scope === "all" ? "luau-all" : "luau-changed";
+  const stem = "luau-all";
   const markdownPath = path.join(REPORT_DIR, `${stem}.md`);
   const jsonPath = path.join(REPORT_DIR, `${stem}.json`);
 
@@ -414,7 +373,7 @@ function main() {
     return;
   }
 
-  const candidateFiles = args.scope === "all" ? collectAllSrcFiles() : collectChangedSrcFiles();
+  const candidateFiles = collectAllSrcFiles();
   const analyzableFiles = candidateFiles.filter((candidateFile) => candidateFile.analyzable);
   const candidatePaths = new Set(candidateFiles.map((candidateFile) => candidateFile.normalizedPath));
   const generatedAt = new Date().toISOString();
@@ -484,7 +443,7 @@ function main() {
     },
   };
 
-  writeArtifacts(args.scope, reportData);
+  writeArtifacts(reportData);
 
   console.log(`Luau diagnostics export complete for scope '${args.scope}'.`);
   console.log(`Markdown report: ${reportData.artifacts.markdownPath}`);

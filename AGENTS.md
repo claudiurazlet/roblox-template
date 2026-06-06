@@ -34,18 +34,9 @@ Put new UI work under `src/UI/app`, `src/UI/core`, `src/UI/features`, `src/UI/hu
 - Service `Server.luau` modules are expected to stay in `ServerScriptService`.
 - `init.luau` claims its parent folder in the generated Rojo tree; child files under that claimed folder are not mapped individually.
 
-## Commands
+## Tooling
 
-Only document or run scripts that exist in `package.json`.
-
-- Set project identity: `npm run init:project -- --name "<Game Name>" --repo "<owner>/<repo>"`
-- Regenerate Rojo tree: `npm run build:rojo`
-- Watch Rojo tree changes: `npm run watch:rojo`
-- Refresh sourcemap: `npm run build:luau:sourcemap`
-- Run Luau diagnostics: `npm run check:luau`
-- Export changed-src diagnostics: `npm run export:luau:diagnostics`
-- Export all-src diagnostics: `npm run export:luau:diagnostics:all`
-- Run headless TestEZ: `npm test`
+Use `package.json` as the source of truth for npm scripts. Validation below defines when required verification commands must be run. See [Readmes/genrojotree-setup.md](Readmes/genrojotree-setup.md) for Rojo and diagnostics tooling details.
 
 ## Implementation Defaults
 
