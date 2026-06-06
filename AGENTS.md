@@ -1,7 +1,5 @@
 # Codex Guide
 
-Use this file for agent operating rules. Durable project guidance lives in [Readmes/README.md](Readmes/README.md).
-
 ## Non-Negotiable Rules
 
 - Repository content must be written in English: code, identifiers, comments, docs, logs, warnings, and commit messages.
@@ -10,7 +8,7 @@ Use this file for agent operating rules. Durable project guidance lives in [Read
 - Treat `default.project.json` as generated output. Regenerate it instead of editing it by hand unless the user asks for that exact file.
 - Treat `tools/genRojoTree.js` as the source of truth for Roblox service placement.
 - Keep server-only authority, privileged data, secrets, and trusted writes out of replicated modules and `src/UI`.
-- Assume Roblox Studio-only state is unavailable unless it is represented in repo files or the user provides screenshots, exports, or logs.
+- Assume Roblox Studio-only state is unavailable unless it is represented in repo files or provided by the user.
 
 ## Source Snapshot
 
