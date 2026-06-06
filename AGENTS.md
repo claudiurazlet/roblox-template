@@ -7,7 +7,7 @@ Use this file for agent operating rules. Durable project guidance lives in [Read
 - Repository content must be written in English: code, identifiers, comments, docs, logs, warnings, and commit messages.
 - Chat replies may be in Italian when the user writes in Italian.
 - After each completed user request, include a suggested commit message in plain, user-friendly English that describes the concrete work first, using short past-tense sentences and simple verbs such as `Added`, `Changed`, `Removed`, `Fixed`, or `Updated`.
-- Read [Readmes/src-architecture.md](Readmes/src-architecture.md) before adding or moving files under `src/`.
+- Use the source placement summary below for routine `src/` changes. Read [Readmes/src-architecture.md](Readmes/src-architecture.md) when adding a new source area, moving existing source files, or when placement is unclear.
 - Treat `default.project.json` as generated output. Regenerate it instead of editing it by hand unless the user asks for that exact file.
 - Treat `tools/genRojoTree.js` as the source of truth for Roblox service placement.
 - Keep server-only authority, privileged data, secrets, and trusted writes out of replicated modules and `src/UI`.
