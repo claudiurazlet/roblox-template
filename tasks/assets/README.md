@@ -5,7 +5,7 @@ Use this folder for committed task-specific screenshots and other lightweight vi
 ## When To Use This Folder
 
 - A screenshot explains a bug, camera issue, layout problem, or gameplay edge case for one specific task.
-- The image should remain available after the task file moves from `tasks/active/` to `tasks/archive/`.
+- The image must remain available after the task file moves from `tasks/active/` to `tasks/archive/`.
 - The image is useful project memory, but not broad enough to belong in `Readmes/references/`.
 
 ## Recommended Organization

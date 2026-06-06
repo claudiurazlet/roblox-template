@@ -45,15 +45,15 @@ Avoid putting `server` in a shared filename unless it is intentionally server-on
 
 Entrypoints only.
 
-- `Client.client.luau` should require and initialize client-facing services and UI boot code.
-- `Server.server.luau` should require and initialize server services and test runners when appropriate.
+- Use `Client.client.luau` to require and initialize client-facing services and UI boot code.
+- Use `Server.server.luau` to require and initialize server services. If a test runner is wired in this file, keep it grouped after service initialization under an explicit test-runner block.
 - Do not put gameplay logic, data tables, UI components, or placeholder service startup here.
 
 ## `src/Services`
 
 Use services for feature ownership with lifecycle, networking, authority, player data, validation, cooldowns, or cross-module orchestration.
 
-Preferred layout:
+Standard layout:
 
 ```text
 src/Services/
@@ -91,21 +91,21 @@ src/Modules/
   UI/        UI-specific pure helpers that are not React components
 ```
 
-Keep modules pure where practical. If a module starts owning remotes, player connections, startup behavior, server writes, or long-lived state, move that responsibility into a service or class.
+Keep modules pure. If a module starts owning remotes, player connections, startup behavior, server writes, or long-lived state, move that responsibility into a service or class.
 
 ## `src/Classes`
 
 Use classes for constructor-based modules with instance state, methods, lifetime, and cleanup.
 
 - A single self-contained class can stay as `src/Classes/Foo.luau`.
-- A family of classes or collaborators should get a folder, for example `src/Classes/Battle/` or `src/Classes/PhysicsEngine/`.
-- Prefer plain modules for stateless calculations and data transforms.
+- Create a folder for a family of classes or collaborators, for example `src/Classes/Battle/` or `src/Classes/PhysicsEngine/`.
+- Use plain modules for stateless calculations and data transforms.
 
 ## `src/UI`
 
 `src/UI` is fully replicated to `ReplicatedStorage.UI`. Do not put server-only secrets, privileged data, or server authority here.
 
-Preferred new UI layout:
+New UI layout:
 
 ```text
 src/UI/
@@ -139,9 +139,9 @@ Create a dedicated folder when it improves ownership or reuse:
 - The feature owns networking, player lifecycle, persistent state, validation, cooldowns, or authority.
 - A UI feature has state plus components, screens, or hooks.
 - A class family has multiple collaborators or variants.
-- The code is likely to be reused across games.
+- The code is already reused by multiple modules, or the task states that it must be reusable across games.
 
-Keep a single file when the module is tiny, pure, and unlikely to grow.
+Keep a single file when the module has one public responsibility, stays pure, and has no second caller or task-stated reuse requirement.
 
 ## Implementation Checklists
 
@@ -150,15 +150,15 @@ When adding a service:
 1. Create `src/Services/<Name>Service`.
 2. Add `Server.luau` for server-owned behavior or data.
 3. Add `Client.luau` for local input, UI requests, or replicated calls.
-4. Add `Utils.luau`, `Types.luau`, or smaller helper modules only when needed.
-5. Wire startup only when the service has real boot-time behavior.
+4. Add `Utils.luau` for shared behavior, `Types.luau` for shared type contracts, or smaller helper modules for concrete service-local helpers. Leave empty helper files out.
+5. Wire startup after the service has an `init` path or a required boot-time side effect. Leave startup unchanged for placeholder modules.
 6. Add focused TestEZ specs for deterministic logic.
 
 When adding a UI feature:
 
-1. Decide whether it is app infrastructure, global HUD, feature UI, or shared widget.
+1. Use `src/UI/app` for app infrastructure, `src/UI/hud` for always-visible HUD, `src/UI/features/<feature>` for feature-owned UI, and `src/UI/shared` for reusable widgets.
 2. Create `src/UI/features/<feature>` for feature-owned UI.
-3. Add `components`, `screens`, `state`, or `hooks` only when the feature needs them.
+3. Add `components`, `screens`, `state`, or `hooks` for concrete files. Leave empty folders out.
 4. Put reusable primitives and hooks under `src/UI/core`.
 5. Put domain widgets reused by multiple features under `src/UI/shared`.
-6. Keep feature state close to the feature unless it is truly global app or HUD state.
+6. Keep feature state in the feature folder. Move it to `src/UI/app` or `src/UI/hud` only when app composition or HUD code reads or writes it across feature boundaries.

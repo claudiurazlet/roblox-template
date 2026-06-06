@@ -39,5 +39,5 @@ You are the review agent for this repository.
 ## Boundaries
 
 - Do not rewrite large areas of implementation during review.
-- Prefer findings with clear impact over speculative advice.
+- Lead with findings that have clear impact. Leave speculative advice out unless it identifies a concrete risk.
 - If no meaningful findings are present, say so explicitly and note residual risks or testing gaps.

@@ -6,9 +6,9 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 
 - Treat `default.project.json` as generated output. Do not edit it manually unless the user explicitly asks for that exact file.
 - The source of truth for Rojo tree generation is `tools/genRojoTree.js`.
-- When creating a new repository from this template, prefer `npm run init:project -- --name "<Game Name>" --repo "<owner>/<repo>"` over manual renaming.
-- Before making changes that affect project structure under `src/`, assume the `Watch Rojo Tree` VS Code task should be running so `default.project.json` stays in sync.
-- If a task or script touches the Rojo tree, prefer updating `tools/genRojoTree.js`, `package.json`, or `.vscode/tasks.json` instead of editing generated JSON.
+- When creating a new repository from this template, use `npm run init:project -- --name "<Game Name>" --repo "<owner>/<repo>"`. Use manual renaming only when the user explicitly asks for manual setup.
+- After changes that affect project structure under `src/`, run `npm run build:rojo` so `default.project.json` stays in sync.
+- If a task or script touches the Rojo tree, update `tools/genRojoTree.js`, `package.json`, or `.vscode/tasks.json` instead of editing generated JSON.
 
 ## genRojoTree conventions
 
@@ -38,7 +38,9 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 - Install Node dependencies before relying on the watch task or Rojo tree generation.
 - Use `npm run build:rojo` to regenerate `default.project.json` once.
 - Use `npm run watch:rojo` or the `Watch Rojo Tree` VS Code task to keep the file updated while developing.
-- When testing structural changes, verify both `tools/genRojoTree.js` and the generated `default.project.json`.
+- After structural changes under `src/`, run `npm run build:rojo` and verify both `tools/genRojoTree.js` and the generated `default.project.json`.
+- After saved Roblox source changes under `src/`, run `npm run export:luau:diagnostics:all`.
+- Run `npm test` before handoff after repository file changes.
 
 ## Known repository-specific pitfalls
 
@@ -48,15 +50,15 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 
 ## Documentation
 
-- Prefer these local docs before guessing workflow details: `Readmes/genrojotree-setup.md`, `Readmes/README.md`, `Readmes/networker.md`, and `Readmes/testez.md`.
-- For new repository bootstrap steps, prefer `Readmes/new-project-checklist.md`.
+- Read these local docs before guessing workflow details: `Readmes/genrojotree-setup.md`, `Readmes/README.md`, `Readmes/networker.md`, and `Readmes/testez.md`.
+- For new repository bootstrap steps, use `Readmes/new-project-checklist.md`.
 - When screenshots, mockups, or visual references are added to the repository, treat them as design guidance rather than authoritative runtime data unless the task says otherwise.
-- Prefer committing durable visual references that the team will reuse, rather than one-off scratch images.
+- Commit durable visual references that the team will reuse instead of one-off scratch images.
 - Use `Readmes/references/` for durable visual references shared across multiple tasks, and keep task-specific images with the task or in task-local notes instead of turning the shared references folder into a dump.
 
 ## Early Prototyping
 
-- For initial gameplay implementations, prefer simple placeholder assets such as blocks, spheres, capsules, plain UI placeholders, and other low-complexity stand-ins so logic, networking, and game flow can be validated first.
+- For initial gameplay implementations, use simple placeholder assets such as blocks, spheres, capsules, plain UI placeholders, and other low-complexity stand-ins so logic, networking, and game flow can be validated first.
 - Do not introduce polished or heavy assets early unless the task explicitly depends on final presentation, scale testing, or asset-specific behavior.
   
 ## Roblox Studio boundary
@@ -64,4 +66,4 @@ This repository is a Roblox game template built around Rojo, Rokit, Luau, and a 
 - Assume the agent can inspect and edit only what exists in the workspace unless the user provides exported asset data or screenshots.
 - Do not assume direct access to the live Roblox Studio DataModel, Explorer state, tags, CollectionService setup, or manually configured instances that are not represented in project files.
 - When a task depends on Studio-only setup such as tags, attributes, asset placement, or instance properties, propose concrete names and a short manual checklist instead of blocking on missing Studio access.
-- Prefer stable, descriptive names for manual Studio configuration so follow-up code and docs can reference them consistently.
+- Use stable, descriptive names for manual Studio configuration so follow-up code and docs can reference them consistently.

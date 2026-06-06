@@ -40,7 +40,7 @@ Use this skill when a task is about diagnosing or preventing performance problem
 
 - Use `Janitor` consistently when objects own connections or long-lived resources.
 - Keep authoritative logic server-side and avoid bouncing state back and forth unnecessarily.
-- Prefer testing core logic directly instead of profiling transport code first.
+- Test core logic directly before profiling transport code, unless the observed evidence points to transport behavior.
 - In UI, question subscriptions, state fan-out, and frequent full-tree updates.
 - In services, question caches that never clear and per-player state that survives `PlayerRemoving`.
 - When Studio-only assets are involved, ask whether the issue comes from code, content, or the interaction between them before changing architecture.
@@ -70,7 +70,7 @@ Use this skill when a task is about diagnosing or preventing performance problem
 3. Check lifecycle cleanup before micro-optimizing expressions.
 4. If assets may be involved, separate code-side suspects from Studio-side suspects.
 5. Reduce repeated work before introducing more complexity.
-6. Prefer one clear measurement or hypothesis at a time.
+6. Use one clear measurement or hypothesis at a time.
 
 ## When not to use this skill
 

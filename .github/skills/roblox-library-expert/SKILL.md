@@ -27,8 +27,8 @@ Use this skill when a task depends on selecting the right library, understanding
 ## Template defaults worth checking first
 
 - Networking: start with `Networker` before inventing raw remotes.
-- Player data: start with `Dataservice` plus `ServicePlayerData` when the higher-level workflow fits.
-- Lower-level player data fallback: use `ProfileService` only when direct control is actually needed.
+- Player data: use `Dataservice` plus `ServicePlayerData` for standard per-player persistence workflows.
+- Lower-level player data fallback: use `ProfileService` only when the task requires direct profile control.
 - UI: start with `React` plus `ReactRoblox` under `src/UI`.
 - Tests: start with `TestEZ` and the existing runner before inventing a custom harness.
 
@@ -37,7 +37,7 @@ Use this skill when a task depends on selecting the right library, understanding
 1. Check whether the needed capability is already covered by an installed package.
 2. Check whether the package is already documented or demonstrated locally.
 3. Verify that the package matches the correct runtime boundary: client-only, server-only, or shared.
-4. Prefer the highest-level package that fits the task without hiding important control.
+4. Choose the highest-level package that satisfies the task without hiding important control.
 5. If proposing a new library, explain why current dependencies are insufficient.
 
 ## Questions to answer during use
@@ -50,10 +50,10 @@ Use this skill when a task depends on selecting the right library, understanding
 
 ## Common decisions in this template
 
-- Prefer `Networker` for service-level client/server communication.
-- Prefer `TestEZ` for deterministic module tests.
-- Prefer `React` and `ReactRoblox` for UI instead of ad hoc screen logic.
-- Prefer `Janitor` when object lifetime, connections, or cleanup logic start to accumulate.
+- Use `Networker` for service-level client/server communication.
+- Use `TestEZ` for deterministic module tests.
+- Use `React` and `ReactRoblox` for UI instead of ad hoc screen logic.
+- Use `Janitor` when object lifetime, connections, or cleanup logic start to accumulate.
 - Treat package presence in `wally.toml` as availability, not proof that it is already wired into gameplay.
 
 ## When not to use this skill

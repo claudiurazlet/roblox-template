@@ -25,7 +25,7 @@ Top-level source folders use stable casing:
 - `src/UI`: React and ReactRoblox UI, replicated as a whole.
 - `src/Examples`: optional local package or pattern examples.
 
-Prefer `src/UI/app`, `src/UI/core`, `src/UI/features`, `src/UI/hud`, and `src/UI/shared` for new UI work. Treat `Old` folders and `.old` files as legacy reference material.
+Put new UI work under `src/UI/app`, `src/UI/core`, `src/UI/features`, `src/UI/hud`, or `src/UI/shared`. Treat `Old` folders and `.old` files as legacy reference material.
 
 ## Commands
 
@@ -51,12 +51,13 @@ Only document or run scripts that exist in `package.json`.
 
 ## Validation
 
-- After structural changes under `src`, run `npm run build:rojo`.
-- After Roblox source changes, run `npm run export:luau:diagnostics:all` when practical.
-- Use `npm run check:luau` when terminal diagnostics are enough.
-- Run `npm test` after testable logic changes or when test behavior may be affected.
-- Add focused TestEZ coverage for deterministic behavior when practical.
-- Verify both client and server entrypoints when changing networking, startup order, or replication boundaries.
+- Run final verification after every request that changes repository files, before the final reply.
+- If files under `src/` were added, removed, moved, or renamed, run `npm run build:rojo` first.
+- If any saved Roblox source under `src/` changed, run `npm run export:luau:diagnostics:all` after Rojo regeneration.
+- Run `npm test` after every completed request that changes repository files.
+- Use `npm run check:luau` only for in-progress terminal diagnostics. Do not use it as a replacement for final diagnostics export after `src/` changes.
+- When adding or changing deterministic rules, validation, cooldowns, serialization, math, generators, or pure UI helpers, add or update focused TestEZ specs before running `npm test`.
+- When changing networking, startup order, or replication boundaries, inspect both `src/Startup/Client.client.luau` and `src/Startup/Server.server.luau` and confirm the changed modules are required from the correct side.
 - Clearly report any verification command that could not be run.
 
 ## On-Demand Docs
@@ -72,4 +73,4 @@ Only document or run scripts that exist in `package.json`.
 - Visual references: [Readmes/references/README.md](Readmes/references/README.md)
 - Task workflow: [tasks/README.md](tasks/README.md)
 
-Search `tasks/archive` only when prior task history is relevant.
+Search `tasks/archive` only when the user asks about past work, a current task references archived work, or active docs and backlog do not explain an existing convention.

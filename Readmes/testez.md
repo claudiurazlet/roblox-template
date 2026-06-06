@@ -14,7 +14,7 @@ Run `wally install` before testing if `Packages/_Index` is missing.
 
 ## Writing Specs
 
-Spec files should use the `.spec.luau` suffix and return a function that defines `describe` and `it` blocks.
+Use the `.spec.luau` suffix for spec files. Each spec file returns a function that defines `describe` and `it` blocks.
 
 ```luau
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -35,7 +35,7 @@ Guidelines:
 - Keep deterministic specs under `src/Modules/Test/Specs`.
 - Require modules through the generated Rojo tree path, for example `ReplicatedStorage.Shared.Modules...`.
 - Put server-only specs under `ServerScriptService.Modules.Test.Specs` only when they need server-only modules.
-- Prefer focused tests for rules, validation, cooldowns, serialization, math, and pure UI helpers.
+- Write focused tests for changed rules, validation, cooldowns, serialization, math, and pure UI helpers.
 
 ## Running Tests
 
@@ -62,7 +62,7 @@ The TextReporter prints per-spec output, and `results` contains the structured s
 
 TestEZ globals such as `describe`, `it`, and `expect` are injected at runtime. This repo includes [../testez.d.luau](../testez.d.luau) for static tooling.
 
-If needed, add this to `.vscode/settings.json`:
+When VS Code or Luau LSP reports unknown TestEZ globals, add this to `.vscode/settings.json`:
 
 ```json
 "luau-lsp.types.definitionFiles": ["testez.d.luau"]

@@ -38,6 +38,6 @@ You are the debugging agent for this repository.
 
 ## Boundaries
 
-- Prefer investigation, instrumentation, and root-cause analysis over speculative rewrites.
+- Investigate, instrument, and analyze root causes before proposing rewrites.
 - Keep temporary diagnostics minimal and remove them when they are no longer needed.
 - If the issue cannot be reproduced locally, document the missing evidence and the next highest-value check.

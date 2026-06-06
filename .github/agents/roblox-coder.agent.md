@@ -44,7 +44,7 @@ You are the implementation agent for this repository.
 
 ## Quality bar
 
-- Prefer root-cause fixes over cosmetic patches.
+- Fix root causes instead of applying cosmetic patches.
 - Keep replication boundaries clear between server-only, client-only, and shared code.
 - When structural changes affect Roblox service placement, update `tools/genRojoTree.js` and validate the generated Rojo tree rather than patching generated output directly.
-- Run relevant validation before handing off.
+- Run the validation commands required by `AGENTS.md` before handing off.

@@ -22,7 +22,7 @@ wally install
 npm run build:rojo
 ```
 
-For a new game created from this template, prefer:
+For a new game created from this template, run:
 
 ```bash
 npm run init:project -- --name "My Game" --repo "your-org/my-game"
@@ -64,7 +64,7 @@ See [src-architecture.md](src-architecture.md) before changing source layout or 
 
 Diagnostics reflect saved files only. They do not read unsaved editor buffers and do not scrape the live VS Code Problems panel.
 
-`npm run export:luau:diagnostics` is useful for task handoffs because it writes stable artifacts under `tasks/local/diagnostics/`. Use `npm run check:luau` when terminal output is enough.
+Use `npm run check:luau` for quick in-progress terminal diagnostics. After saved `src/**` changes, use `npm run export:luau:diagnostics:all` for final verification so diagnostics artifacts under `tasks/local/diagnostics/` are refreshed.
 
 If a specific Roblox API definitions file is needed, set `LUAU_LSP_ROBLOX_DEFS_PATH` before running diagnostics.
 

@@ -12,21 +12,21 @@ Use these notes when editing gameplay code, services, modules, UI, or startup fi
 
 - Repository-wide workflow lives in `copilot-instructions.md`.
 - The source of truth for Rojo tree layout is `tools/genRojoTree.js`.
-- `default.project.json` is generated output and should not be hand-edited for normal workflow changes.
+- `default.project.json` is generated output. Do not hand-edit it for normal workflow changes.
 
 ## Code organization
 
-- `src/Services` contains feature services. Prefer the compact `<ServiceName>/Client.luau`, `Server.luau`, and optional `Utils.luau` pattern already used by this template.
+- `src/Services` contains feature services. Use the compact `<ServiceName>/Client.luau`, `Server.luau`, and optional `Utils.luau` pattern already used by this template.
 - `src/Modules` contains shared game logic and utilities.
 - `src/Classes` contains class-style Luau modules.
-- `src/Startup` should stay focused on startup entrypoints rather than deep feature logic.
+- Keep `src/Startup` focused on startup entrypoints rather than deep feature logic.
 - `src/UI` contains React or ReactRoblox UI, hooks, screens, stories, and store code.
 
 ## Template stack defaults
 
 - For new UI work, default to the existing React + ReactRoblox stack unless the task explicitly changes frontend direction.
-- For new player-data work, prefer `Dataservice` plus `ServicePlayerData` as the starting point when the higher-level workflow fits the feature.
-- Treat `ProfileService` as an available server-side fallback or lower-level dependency, not the first default for new template code.
+- For new player-data work, use `Dataservice` plus `ServicePlayerData` for standard per-player persistence workflows.
+- Use `ProfileService` only when the task requires lower-level profile control that `Dataservice` plus `ServicePlayerData` does not provide.
 - Package presence in `wally.toml` does not automatically mean the package is already wired into current gameplay code; document and integrate deliberately.
 
 ## Replication boundaries
@@ -41,10 +41,12 @@ Use these notes when editing gameplay code, services, modules, UI, or startup fi
 - If a change alters how code maps into Roblox services, update `tools/genRojoTree.js` rather than hand-editing `default.project.json`.
 - `init.luau` claims its parent folder in the generated tree, so child mapping behavior changes when it is introduced or removed.
 - `src/UI` and `src/Startup` are handled explicitly by the Rojo tree generator and should not be remapped casually.
-- Prefer extending the current folder conventions before introducing deeper or inconsistent nesting.
+- Extend the current folder conventions before introducing deeper or inconsistent nesting.
 
 ## Validation guidance
 
-- For structural changes, regenerate or watch the Rojo tree and verify expected placement.
-- Prefer focused Luau or TestEZ coverage when changing shared module behavior.
-- When touching networking or replication assumptions, verify both client and server entrypoints.
+- After structural changes under `src/`, run `npm run build:rojo` and verify expected placement in `default.project.json`.
+- After saved Roblox source changes under `src/`, run `npm run export:luau:diagnostics:all`.
+- Run `npm test` before handoff after repository file changes.
+- Add or update focused Luau or TestEZ coverage when changing shared module behavior.
+- When touching networking or replication assumptions, inspect both client and server entrypoints.

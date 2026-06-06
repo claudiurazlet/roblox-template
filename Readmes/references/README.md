@@ -5,16 +5,16 @@ Use this folder for durable visual references that should survive across multipl
 ## What belongs here
 
 - UI style references that define a lasting direction for menus, HUDs, inventory, or onboarding.
-- Environment, lighting, or mood references that the team is likely to reuse.
+- Environment, lighting, or mood references that are used by at least two tasks or marked as reusable in a task file.
 - Reusable examples of interaction patterns, layout direction, or visual hierarchy.
 - Annotated screenshots or exported stills that will be useful beyond one task.
 
 ## What should not live here
 
 - One-off scratch screenshots taken only to discuss a single bug or temporary idea.
-- Temporary work-in-progress captures that are unlikely to be reused.
+- Temporary work-in-progress captures with no planned reuse.
 - Large collections of nearly identical images with no explanation.
-- Raw video files unless a specific file is expected to be reused by the team.
+- Raw video files unless a task or reference note marks the specific file as reusable.
 
 ## Shared references vs task-specific references
 
@@ -24,8 +24,8 @@ Use this folder for durable visual references that should survive across multipl
 
 ## Recommended organization
 
-- Prefer small subfolders by topic, for example `ui/`, `combat/`, `environment/`, or `lighting/`.
-- Prefer descriptive names such as `ui-shop-grid-reference.png` or `combat-hit-feedback-reference.jpg`.
+- Use small subfolders by topic, for example `ui/`, `combat/`, `environment/`, or `lighting/`.
+- Use descriptive names such as `ui-shop-grid-reference.png` or `combat-hit-feedback-reference.jpg`.
 - Add a short markdown note next to groups of images when the reason for the reference is not obvious.
 
 ## Using video references
@@ -37,5 +37,5 @@ Use this folder for durable visual references that should survive across multipl
 ## How agents should use this folder
 
 - Treat files here as design guidance, not as authoritative runtime data.
-- Prefer citing the specific reference image or note that influenced a proposal.
+- Cite the specific reference image or note that influenced a proposal.
 - If the reference conflicts with the current repository conventions, follow the task instructions or ask for clarification.

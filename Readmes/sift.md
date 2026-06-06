@@ -2,7 +2,7 @@
 
 Sift is a Luau table helper library for immutable-style updates. This template pins `Sift = "csqrl/sift@0.0.11"` in [../wally.toml](../wally.toml).
 
-Use Sift when new table references make the code clearer, especially for React state, reducer-like state updates, undo/redo history, or predictable transformations. Prefer plain table mutation when the code is local, performance-sensitive, and does not benefit from immutable references.
+Use Sift for React state, reducer-like state updates, undo/redo history, or predictable transformations that need new table references. Use plain table mutation for local or performance-sensitive code that does not need immutable references.
 
 ## Import
 
@@ -45,10 +45,10 @@ The template includes examples at [../src/Examples/Sift/SiftExamples.luau](../sr
 
 The package source under `Packages/_Index/csqrl_sift@0.0.11/sift/src/` is also useful when confirming exact operation names.
 
-## Practical Rules
+## Rules
 
 - Do not mutate React state tables directly; return a new table from the setter.
-- Use `mergeDeep` only when nested updates are clearer than rebuilding the nested structure explicitly.
+- Use `mergeDeep` for nested updates that preserve existing nested keys. Rebuild the nested structure explicitly when replacement is simpler.
 - Keep hot-path code simple and measure before replacing direct mutation with many table copies.
 - Avoid mixing immutable and mutating updates in the same state owner.
 

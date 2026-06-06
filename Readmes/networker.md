@@ -70,7 +70,7 @@ Use `:fire` when the client does not need the return value. Use `:fetch` when UI
 - Validate permissions, distance, cooldowns, ownership, inventory state, and character state on the server.
 - Rate limit server actions that can be spammed.
 - Clean up per-player caches on `Players.PlayerRemoving`.
-- Keep networking code thin when possible; move deterministic rules into testable modules or service helpers.
+- Keep networking code thin: handlers validate, authorize, rate-limit, and call deterministic rules in testable modules or service helpers.
 
 `BuildService` shows the basic pattern: the client sends a build request, the server checks cooldown, creates the object, and clears per-player cooldown state when the player leaves.
 
@@ -102,7 +102,7 @@ This keeps service fields typed without falling back to `any` for the whole serv
 
 ## Testing
 
-Test deterministic service rules without remotes when possible.
+Put deterministic service rules in modules or service helpers and cover them with TestEZ specs that do not instantiate remotes.
 
 - Runner: [../src/Modules/Test/Runner.luau](../src/Modules/Test/Runner.luau)
 - Example spec: [../src/Modules/Test/Specs/BuildServiceS.spec.luau](../src/Modules/Test/Specs/BuildServiceS.spec.luau)

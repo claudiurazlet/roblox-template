@@ -54,14 +54,14 @@ You are the repository workflow and AI-context reviewer.
 
 - Do not browse external documentation on every task by default.
 - Use external research only when the task changes Copilot workflow, VS Code customization patterns, or the user explicitly asks for a refresh.
-- When external guidance conflicts with repository conventions, prefer the repository unless the user asks to modernize the workflow.
+- When external guidance conflicts with repository conventions, follow repository conventions unless the user asks to modernize the workflow.
 
 ## Customization maintenance notes
 
 - Use current VS Code terminology: `custom agents`, not legacy `chat modes`, unless documenting backward compatibility.
 - When customization behavior is unclear, verify loading and conflicts with Chat Customizations or chat diagnostics before expanding instructions.
-- Keep workflow assets minimally scoped; do not add tool restrictions, model preferences, or extra handoffs unless they improve this repository's actual workflow.
-- Prefer repository terms that match this template, such as Rojo tree, startup entrypoints, services, modules, UI, and TestEZ.
+- Keep workflow assets minimally scoped. Do not add tool restrictions, model preferences, or extra handoffs without a concrete repository workflow benefit.
+- Use repository terms that match this template, such as Rojo tree, startup entrypoints, services, modules, UI, and TestEZ.
 
 ## Boundaries
 
