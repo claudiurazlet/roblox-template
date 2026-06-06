@@ -69,7 +69,6 @@ Only document or run scripts that exist in `package.json`.
 - If files under `src/` were added, removed, moved, or renamed, run `npm run build:rojo` first.
 - If any saved Roblox source under `src/` changed, run `npm run export:luau:diagnostics:all` after Rojo regeneration.
 - Run `npm test` after every completed request that changes repository files.
-- Use `npm run check:luau` only for in-progress terminal diagnostics. Do not use it as a replacement for final diagnostics export after `src/` changes.
 - When adding or changing deterministic rules, validation, cooldowns, serialization, math, generators, or pure UI helpers, add or update focused TestEZ specs before running `npm test`.
 - When changing networking, startup order, or replication boundaries, inspect both `src/Startup/Client.client.luau` and `src/Startup/Server.server.luau` and confirm the changed modules are required from the correct side.
 - Clearly report any verification command that could not be run.
