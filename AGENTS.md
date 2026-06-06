@@ -66,7 +66,7 @@ Only document or run scripts that exist in `package.json`.
 ## Validation
 
 - Run final verification after every request that changes repository files, before the final reply.
-- If files under `src/` were added, removed, moved, or renamed, run `npm run build:rojo` first.
+- Assume `npm run watch:rojo` normally keeps the Rojo tree current when files under `src/` are touched. Start `npm run watch:rojo`, only when Rojo tree generation appears stale or broken.
 - If any saved Roblox source under `src/` changed, run `npm run export:luau:diagnostics:all` after Rojo regeneration.
 - Run `npm test` after every completed request that changes repository files.
 - When adding or changing deterministic rules, validation, cooldowns, serialization, math, generators, or pure UI helpers, add or update focused TestEZ specs before running `npm test`.
