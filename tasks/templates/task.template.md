@@ -62,7 +62,7 @@
 
 ## AI Context Updates
 
-<!-- Whether this task should update `.github/`, prompts, agents, skills, docs, templates, or nothing. -->
+<!-- Whether this task should update `AGENTS.md`, docs, templates, or nothing. -->
 
 ## Workflow or Docs Impact
 

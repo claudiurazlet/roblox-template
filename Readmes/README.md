@@ -27,4 +27,4 @@ This folder holds durable project guides. Task records and task-specific assets 
 - Put active plans, reviews, and task memory in `tasks/`.
 - Put one-task screenshots under `tasks/assets/<task-slug>/`.
 - Put reusable visual direction under `Readmes/references/`.
-- Put agent-facing operating rules in `AGENTS.md` or `.github/`, not in a separate README copy.
+- Put agent-facing operating rules in `AGENTS.md`, not in a separate README copy.

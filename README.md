@@ -1,6 +1,6 @@
 # Roblox Rojo Template
 
-Reusable Roblox game template built around Rojo, Rokit, Wally, TestEZ, generated diagnostics, task files, and GitHub Copilot project assets.
+Reusable Roblox game template built around Rojo, Rokit, Wally, TestEZ, generated diagnostics, task files, and Codex-ready agent guidance.
 
 ## Quick Start
 
@@ -44,7 +44,7 @@ Most work starts with:
 - [Readmes/new-project-checklist.md](Readmes/new-project-checklist.md): steps for creating a new project from this template.
 - [tasks/README.md](tasks/README.md): task records, backlog, archive, and task assets.
 
-Agent-specific rules live in [AGENTS.md](AGENTS.md). GitHub Copilot prompts, agents, and instructions live under `.github/`.
+Agent-specific rules live in [AGENTS.md](AGENTS.md).
 
 ## Source Of Truth
 

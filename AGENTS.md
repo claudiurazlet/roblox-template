@@ -27,6 +27,14 @@ Top-level source folders use stable casing:
 
 Put new UI work under `src/UI/app`, `src/UI/core`, `src/UI/features`, `src/UI/hud`, or `src/UI/shared`. Treat `Old` folders and `.old` files as legacy reference material.
 
+## Roblox Service Mapping
+
+- `src/Startup/Client.client.luau` maps to `StarterPlayer/StarterPlayerScripts`.
+- `src/Startup/Server.server.luau` maps to `ServerScriptService`.
+- Service `Client.luau` and `Utils.luau` modules are expected to replicate through `ReplicatedStorage`.
+- Service `Server.luau` modules are expected to stay in `ServerScriptService`.
+- `init.luau` claims its parent folder in the generated Rojo tree; child files under that claimed folder are not mapped individually.
+
 ## Commands
 
 Only document or run scripts that exist in `package.json`.
@@ -48,6 +56,12 @@ Only document or run scripts that exist in `package.json`.
 - Do not force OOP when a plain module is clearer.
 - Do not add startup wiring for placeholder services.
 - For early gameplay, prioritize performance, player feel, readable feedback, and simple fun over precision-heavy simulation or overbuilt anti-cheat.
+- Use `Networker` for service-level client/server communication before adding raw remotes.
+- Use `Dataservice` plus `ServicePlayerData` for standard per-player persistence. Use `ProfileService` only when lower-level profile control is required.
+- Use React and ReactRoblox for new UI under `src/UI` unless the task explicitly changes UI direction.
+- Use TestEZ and the existing runner for deterministic module tests before adding a custom test harness.
+- Treat package presence in `wally.toml` as availability, not proof that the package is already wired into gameplay.
+- When investigating performance, check cleanup, repeated allocations, polling, remote volume, startup work, and UI churn before broader rewrites.
 
 ## Validation
 

@@ -42,7 +42,7 @@ Recommended minimum setup:
 1. Keep the validation workflow enabled.
 2. Enable branch protection for the default branch.
 3. Keep the pull request template for gameplay, networking, startup, Rojo tree, or performance changes.
-4. Keep `.github/` prompts, agents, skills, and instructions unless the team intentionally simplifies the workflow.
+4. Keep `AGENTS.md` as the Codex operating guide and keep `.github/` focused on GitHub workflow assets.
 
 ## First Project Task
 
