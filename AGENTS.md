@@ -19,12 +19,14 @@ Top-level source folders use stable casing:
 
 - `src/Startup`: client and server entrypoints.
 - `src/Services`: lifecycle, networking, authority, validation, data ownership, and orchestration.
-- `src/Modules`: shared pure rules, config, schemas, generators, math, validators, and transforms.
-- `src/Classes`: constructor-based stateful modules with lifetime or cleanup.
+- `src/Modules`: shared pure rules, deterministic helpers, config, schemas, generators, math, validators, and transforms that can be tested without remotes.
+- `src/Classes`: constructor-based stateful modules with instance lifetime, cleanup, or reusable object behavior.
 - `src/UI`: React and ReactRoblox UI, replicated as a whole.
 - `src/Examples`: optional local package or pattern examples.
 
 Put new UI work under `src/UI/app`, `src/UI/core`, `src/UI/features`, `src/UI/hud`, or `src/UI/shared`.
+
+Create a service folder when a feature owns client/server behavior, networking, player lifecycle, persistent state, validation, cooldowns, authority checks, or cross-module orchestration.
 
 ## Roblox Service Mapping
 
@@ -40,9 +42,6 @@ Use `package.json` as the source of truth for npm scripts. Validation below defi
 
 ## Implementation Defaults
 
-- Create a service when a feature owns client/server behavior, networking, player lifecycle, persistent state, validation, cooldowns, or authority checks.
-- Keep deterministic rules in small modules or service helpers that can be tested without remotes.
-- Use class-style modules when a feature owns state, lifetime, cleanup, or behavior.
 - Do not add startup wiring for placeholder services.
 - For early gameplay, prioritize performance, player feel, readable feedback, and simple fun over precision-heavy simulation or overbuilt anti-cheat.
 - Use `Networker` for service-level client/server communication before adding raw remotes.
