@@ -25,7 +25,7 @@ Top-level source folders use stable casing:
 - `src/UI`: React and ReactRoblox UI, replicated as a whole.
 - `src/Examples`: optional local package or pattern examples.
 
-Put new UI work under `src/UI/app`, `src/UI/core`, `src/UI/features`, `src/UI/hud`, or `src/UI/shared`. Treat `Old` folders and `.old` files as legacy reference material.
+Put new UI work under `src/UI/app`, `src/UI/core`, `src/UI/features`, `src/UI/hud`, or `src/UI/shared`.
 
 ## Roblox Service Mapping
 
