@@ -53,7 +53,6 @@ Only document or run scripts that exist in `package.json`.
 - Create a service when a feature owns client/server behavior, networking, player lifecycle, persistent state, validation, cooldowns, or authority checks.
 - Keep deterministic rules in small modules or service helpers that can be tested without remotes.
 - Use class-style modules when a feature owns state, lifetime, cleanup, or behavior.
-- Do not force OOP when a plain module is clearer.
 - Do not add startup wiring for placeholder services.
 - For early gameplay, prioritize performance, player feel, readable feedback, and simple fun over precision-heavy simulation or overbuilt anti-cheat.
 - Use `Networker` for service-level client/server communication before adding raw remotes.
