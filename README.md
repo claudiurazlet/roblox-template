@@ -1,10 +1,10 @@
-# Roblox Rojo Template
+# Roblox Rojo Project
 
-Reusable Roblox game template built around Rojo, Rokit, Wally, TestEZ, generated diagnostics, task files, and Codex-ready agent guidance.
+Roblox game project built around Rojo, Rokit, Wally, TestEZ, generated diagnostics, task files, and Codex-ready agent guidance.
 
 ## Quick Start
 
-For a new game created from this template, run:
+For first-time project identity setup, run:
 
 ```bash
 npm run init:project -- --name "My Game" --repo "your-org/my-game"
@@ -12,7 +12,7 @@ npm run init:project -- --name "My Game" --repo "your-org/my-game"
 
 The initializer updates project identity, repository metadata, the Wally package name, dependencies, tools, and the generated Rojo tree.
 
-For local validation of the template itself:
+For local project validation:
 
 ```bash
 npm install
@@ -41,7 +41,7 @@ Most work starts with:
 
 - [Readmes/src-architecture.md](Readmes/src-architecture.md): source layout and ownership rules.
 - [Readmes/genrojotree-setup.md](Readmes/genrojotree-setup.md): Rojo generation, sourcemap, diagnostics, and troubleshooting.
-- [Readmes/new-project-checklist.md](Readmes/new-project-checklist.md): steps for creating a new project from this template.
+- [Readmes/new-project-checklist.md](Readmes/new-project-checklist.md): project identity and first-run setup.
 - [tasks/README.md](tasks/README.md): task records, backlog, archive, and task assets.
 
 Agent-specific rules live in [AGENTS.md](AGENTS.md).

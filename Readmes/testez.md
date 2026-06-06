@@ -1,6 +1,6 @@
 # TestEZ
 
-Use this guide when adding or running tests in this template.
+Use this guide when adding or running tests in this project.
 
 ## Local Setup
 

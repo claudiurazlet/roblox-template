@@ -7,7 +7,7 @@ This folder holds durable project guides. Task records and task-specific assets 
 - [../README.md](../README.md): setup, common commands, and source-of-truth notes.
 - [src-architecture.md](src-architecture.md): source layout, Rojo mapping assumptions, and where new code belongs.
 - [genrojotree-setup.md](genrojotree-setup.md): generated Rojo tree, sourcemap, Luau diagnostics, and troubleshooting.
-- [new-project-checklist.md](new-project-checklist.md): bootstrap checklist for a new game repository.
+- [new-project-checklist.md](new-project-checklist.md): project identity and first-run setup checklist.
 
 ## Library Guides
 

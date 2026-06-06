@@ -1,6 +1,6 @@
 # Sift
 
-Sift is a Luau table helper library for immutable-style updates. This template pins `Sift = "csqrl/sift@0.0.11"` in [../wally.toml](../wally.toml).
+Sift is a Luau table helper library for immutable-style updates. This project pins `Sift = "csqrl/sift@0.0.11"` in [../wally.toml](../wally.toml).
 
 Use Sift for React state, reducer-like state updates, undo/redo history, or predictable transformations that need new table references. Use plain table mutation for local or performance-sensitive code that does not need immutable references.
 
@@ -41,7 +41,7 @@ Set:
 
 ## Local Examples
 
-The template includes examples at [../src/Examples/Sift/SiftExamples.luau](../src/Examples/Sift/SiftExamples.luau). Use that file for quick behavior checks and sample operations instead of copying long examples into this guide.
+This project includes examples at [../src/Examples/Sift/SiftExamples.luau](../src/Examples/Sift/SiftExamples.luau). Use that file for quick behavior checks and sample operations instead of copying long examples into this guide.
 
 The package source under `Packages/_Index/csqrl_sift@0.0.11/sift/src/` is also useful when confirming exact operation names.
 

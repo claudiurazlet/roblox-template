@@ -10,11 +10,11 @@
 
 ## Objective
 
-Choose the first game to build from this template and define an MVP that is small enough to ship quickly without locking the repository identity too early.
+Choose the first game direction for this repository and define an MVP that is small enough to ship quickly without locking the project identity too early.
 
 ## Context
 
-The repository is now a reusable Roblox template. The next step is to spin a new game repository from it, keep the project name flexible, and start with a concept that teaches the gameplay loop, Roblox workflow, and template structure without requiring heavy networking or large content pipelines.
+This repository is the working Roblox game project. The next step is to keep the project name flexible and start with a concept that teaches the gameplay loop, Roblox workflow, and source structure without requiring heavy networking or large content pipelines.
 
 The current candidate is a Doodle Jump-style vertical platformer with later power-ups.
 
@@ -39,14 +39,14 @@ The current candidate is a Doodle Jump-style vertical platformer with later powe
 
 - From the current candidate list, a Doodle Jump-style game is one of the lowest-risk starting points because it has a compact core loop: jump, land, climb, survive.
 - It avoids the immediate complexity of networking, kart physics, PvP balance, large maps, or multi-team rules.
-- It fits this template well because the first slice can live mostly in shared modules plus a small gameplay service and lightweight UI.
+- It fits this project well because the first slice can live mostly in shared modules plus a small gameplay service and lightweight UI.
 - Power-ups can be layered cleanly after the movement and platform spawning loop is stable.
-- Repository identity can be changed later by re-running the project initialization script with a new display name, repo slug, and optional Wally scope.
+- Repository identity can be updated later by re-running the project initialization script with a new display name, repo slug, and optional Wally scope.
 
 ## Approved Plan
 
-1. Create a new game repository from the template without overcommitting to the final brand name.
-2. Run `npm run init:project -- --name "Working Title" --repo "owner/repo"` and treat the result as provisional.
+1. Keep the repository identity provisional until the core loop is playable.
+2. Run `npm run init:project -- --name "Working Title" --repo "owner/repo"` only when project metadata needs to be updated.
 3. Build a Doodle Jump-style MVP focused on one satisfying movement loop.
 4. Defer powers, cosmetics, progression, and social features until the MVP feels good.
 5. Re-evaluate the project identity after the core loop is playable.
@@ -109,7 +109,7 @@ This task establishes a recommended early-project pattern: provisional naming, c
 
 ## Closeout Decision
 
-Keep active until the first game repository is created or the concept is replaced.
+Keep active until the first playable direction is accepted or the concept is replaced.
 
 ## Completion Summary
 

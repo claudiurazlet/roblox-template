@@ -1,6 +1,6 @@
 # New Game Planning Order
 
-Use this order when starting a new Roblox game from the template. Update it when playtests or production constraints prove a different order is better.
+Use this order when starting a new Roblox game in this repository. Update it when playtests or production constraints prove a different order is better.
 
 ## Core Rule
 

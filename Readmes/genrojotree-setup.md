@@ -22,7 +22,7 @@ wally install
 npm run build:rojo
 ```
 
-For a new game created from this template, run:
+When setting the game identity for this repository, run:
 
 ```bash
 npm run init:project -- --name "My Game" --repo "your-org/my-game"

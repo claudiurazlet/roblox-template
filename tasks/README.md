@@ -57,4 +57,4 @@ Section ownership:
 - Avoid committing noisy status churn.
 - Use `tasks/local/` for personal notes, temporary decompositions, or experiments that should not enter project history.
 - Store committed task screenshots under `tasks/assets/<task-slug>/` when they need to survive task archival.
-- Reset imported or obsolete task records instead of keeping irrelevant history from another repository.
+- Remove obsolete task records when they no longer describe useful project memory.

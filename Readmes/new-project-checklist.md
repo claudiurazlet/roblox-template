@@ -1,10 +1,10 @@
-# New Project Bootstrap Checklist
+# Project Bootstrap Checklist
 
-Use this checklist when creating a new Roblox game repository from this template.
+Use this checklist when setting up this Roblox game repository.
 
 ## Initialize
 
-After creating or cloning the new repository, run:
+After cloning this repository on a machine or when updating project identity, run:
 
 ```bash
 npm run init:project -- --name "My Game" --repo "your-org/my-game"
@@ -33,7 +33,7 @@ The initializer updates project identity and runs `rokit install`, `npm install`
 4. Open VS Code and run the `Watch Rojo Tree` task while editing source structure.
 5. Start `rojo serve` before connecting Roblox Studio.
 6. Replace the root README with game-specific documentation once the game direction is stable.
-7. If the repository was copied manually, replace the old Git remote.
+7. If the repository was copied manually, replace the previous Git remote.
 
 ## GitHub Setup
 

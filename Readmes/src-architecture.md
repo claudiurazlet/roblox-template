@@ -129,7 +129,7 @@ Placement rules:
 - Put always-visible HUD regions in `UI/hud/<RegionName>`.
 - Create a feature folder as soon as a UI feature has state plus screens or components.
 
-Legacy or staging folders such as `Components`, `Hooks`, `Screens`, `Store`, `ComponentsOld`, or `ScreensOld` are reference areas. Do not add new work there unless a task explicitly asks for migration or compatibility work.
+Keep new UI work in the current `app`, `core`, `features`, `hud`, and `shared` layout. Add narrower folders only when they support a concrete feature or reusable UI concern.
 
 ## When To Create A Folder
 
@@ -139,7 +139,7 @@ Create a dedicated folder when it improves ownership or reuse:
 - The feature owns networking, player lifecycle, persistent state, validation, cooldowns, or authority.
 - A UI feature has state plus components, screens, or hooks.
 - A class family has multiple collaborators or variants.
-- The code is already reused by multiple modules, or the task states that it must be reusable across games.
+- The code is already reused by multiple modules, or the task states that it must be reusable across project features.
 
 Keep a single file when the module has one public responsibility, stays pure, and has no second caller or task-stated reuse requirement.
 

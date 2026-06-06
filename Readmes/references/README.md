@@ -1,6 +1,6 @@
 # Visual References
 
-Use this folder for durable visual references that should survive across multiple tasks and help guide the overall direction of a project derived from this template.
+Use this folder for durable visual references that should survive across multiple tasks and help guide the overall direction of this Roblox game.
 
 ## What belongs here
 
