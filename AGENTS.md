@@ -58,7 +58,7 @@ Only document or run scripts that exist in `package.json`.
 - For early gameplay, prioritize performance, player feel, readable feedback, and simple fun over precision-heavy simulation or overbuilt anti-cheat.
 - Use `Networker` for service-level client/server communication before adding raw remotes.
 - Use `Dataservice` plus `ServicePlayerData` for standard per-player persistence. Use `ProfileService` only when lower-level profile control is required.
-- Use React and ReactRoblox for new UI under `src/UI` unless the task explicitly changes UI direction.
+- Use React and ReactRoblox for new UI under `src/UI` unless explicitly requested otherwise.
 - Use TestEZ and the existing runner for deterministic module tests before adding a custom test harness.
 - Treat package presence in `wally.toml` as availability, not proof that the package is already wired into gameplay.
 - When investigating performance, check cleanup, repeated allocations, polling, remote volume, startup work, and UI churn before broader rewrites.
@@ -85,6 +85,3 @@ Only document or run scripts that exist in `package.json`.
 - TestEZ usage: [Readmes/testez.md](Readmes/testez.md)
 - Sift usage: [Readmes/sift.md](Readmes/sift.md)
 - Visual references: [Readmes/references/README.md](Readmes/references/README.md)
-- Task workflow: [tasks/README.md](tasks/README.md)
-
-Search `tasks/archive` only when the user asks about past work, a current task references archived work, or active docs and backlog do not explain an existing convention.
