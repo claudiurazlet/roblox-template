@@ -44,8 +44,16 @@ Use `package.json` as the source of truth for npm scripts. Validation below defi
 - Use `Networker` for service-level client/server communication before adding raw remotes.
 - Use `Dataservice` plus `ServicePlayerData` for standard per-player persistence. Use `ProfileService` only when lower-level profile control is required.
 - Use React and ReactRoblox for new UI under `src/UI` unless explicitly requested otherwise.
+- Use `Charm` for shared UI or gameplay state that several React components need to read. Use component-local React state for isolated UI state.
+- Use `ReactCharm` when binding Charm atoms to React components.
+- Use `Sift` for immutable table updates, especially React or Charm state updates. Use plain table mutation for local hot-path data that does not need new references.
+- Use `Ripple` for UI motion and spring animation before adding custom per-frame animation code.
+- Use `ReactErrorBoundary` around feature-level React roots or UI areas where render failures should be contained.
+- Use `Janitor` for cleanup in services, classes, player lifecycle objects, connections, instances, and long-lived UI controllers.
+- Use `Signal` for local in-process events. Use `Networker` for client/server communication.
+- Use `Promise` only when async work needs composition, cancellation, retries, or explicit failure flow; keep simple one-off work synchronous or task-based.
 - Use TestEZ and the existing runner for deterministic module tests before adding a custom test harness.
-- Treat package presence in `wally.toml` as availability, not proof that the package is already wired into gameplay.
+- Treat package presence in `wally.toml` as a preferred toolkit for future game work, not proof that the package is already wired into gameplay.
 - When investigating performance, check cleanup, repeated allocations, polling, remote volume, startup work, and UI churn before broader rewrites.
 
 ## Validation

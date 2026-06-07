@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 
 const BASE_PATH = path.join(__dirname, "../src");
+const PACKAGES_PATH = path.join(__dirname, "../Packages");
+const SERVER_PACKAGES_PATH = path.join(__dirname, "../ServerPackages");
 const UI_PATH = path.join(BASE_PATH, "UI");
 
 function toPosix(p) {
@@ -64,11 +66,11 @@ const tree = {
         Classes: {  $className: "Folder", },
         Modules: { $className: "Folder", }
       },
-      Packages: { $path: "Packages", },
+      ...(fs.existsSync(PACKAGES_PATH) ? { Packages: { $path: "Packages", } } : {}),
     },
 
     ServerScriptService: {
-      ServerPackages: { $path: "ServerPackages", },
+      ...(fs.existsSync(SERVER_PACKAGES_PATH) ? { ServerPackages: { $path: "ServerPackages", } } : {}),
       Server: { $path: "src/Startup/Server.server.luau", },
       Services: { $className: "Folder", },
       Classes: { $className: "Folder", },
