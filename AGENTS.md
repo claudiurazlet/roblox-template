@@ -68,12 +68,13 @@ Use `package.json` as the source of truth for npm scripts. Validation below defi
 
 ## On-Demand Docs
 
-- Documentation map: [Readmes/README.md](Readmes/README.md)
-- Source architecture: [Readmes/src-architecture.md](Readmes/src-architecture.md)
-- Rojo tooling and diagnostics: [Readmes/genrojotree-setup.md](Readmes/genrojotree-setup.md)
-- New project bootstrap: [Readmes/new-project-checklist.md](Readmes/new-project-checklist.md)
-- Game planning order: [Readmes/game-planning-order.md](Readmes/game-planning-order.md)
-- Networker usage: [Readmes/networker.md](Readmes/networker.md)
-- TestEZ usage: [Readmes/testez.md](Readmes/testez.md)
-- Sift usage: [Readmes/sift.md](Readmes/sift.md)
-- Visual references: [Readmes/references/README.md](Readmes/references/README.md)
+Use these docs only when the current task needs their details:
+
+- [Readmes/README.md](Readmes/README.md): open when looking for the full documentation map.
+- [Readmes/genrojotree-setup.md](Readmes/genrojotree-setup.md): open when Rojo tree generation, diagnostics, or tooling behavior is involved.
+- [Readmes/new-project-checklist.md](Readmes/new-project-checklist.md): open when bootstrapping or adapting a new project from this template.
+- [Readmes/game-planning-order.md](Readmes/game-planning-order.md): open when planning gameplay systems or deciding implementation order.
+- [Readmes/networker.md](Readmes/networker.md): open when adding or changing service-level client/server communication.
+- [Readmes/testez.md](Readmes/testez.md): open when adding, changing, or debugging TestEZ specs.
+- [Readmes/sift.md](Readmes/sift.md): open when doing immutable table updates, especially for React or Charm state.
+- [Readmes/references/README.md](Readmes/references/README.md): open when visual references are needed.
