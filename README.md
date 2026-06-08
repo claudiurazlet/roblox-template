@@ -35,13 +35,14 @@ Start `rojo serve` when you are ready to sync the generated project with Roblox 
 
 ## Documentation
 
-Use [Readmes/README.md](Readmes/README.md) as the documentation map.
-
 Most work starts with:
 
 - [Readmes/src-architecture.md](Readmes/src-architecture.md): source layout and ownership rules.
 - [Readmes/genrojotree-setup.md](Readmes/genrojotree-setup.md): Rojo generation, sourcemap, diagnostics, and troubleshooting.
 - [Readmes/new-project-checklist.md](Readmes/new-project-checklist.md): project identity and first-run setup.
+- [Readmes/game-planning-order.md](Readmes/game-planning-order.md): default implementation order for early gameplay systems.
+- [Readmes/networker.md](Readmes/networker.md): client-server service networking patterns.
+- [Readmes/testez.md](Readmes/testez.md): TestEZ spec layout, runner behavior, and test commands.
 - [tasks/README.md](tasks/README.md): task records, backlog, archive, and task assets.
 
 Agent-specific rules live in [AGENTS.md](AGENTS.md).
